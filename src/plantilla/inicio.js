@@ -1,7 +1,7 @@
 // Home y páginas de sector (misma plantilla; el sector cambia la línea bajo el hero, la foto,
 // los avisos de "Atiende", el parte de ejemplo y una pregunta extra).
 
-import { esc, conAcento, enlaceWhatsapp, carrusel, tarjetas, oscuro, precio, preguntas, cierre } from "./comun.js";
+import { esc, conAcento, enlaceWhatsapp, ICONOS, buscarLogo, tarjetas, oscuro, precio, preguntas, cierre } from "./comun.js";
 
 function heroFoto(c, sector) {
   const img = c.t.hero.imagen;
@@ -12,24 +12,59 @@ function heroFoto(c, sector) {
           <img src="${esc(f.src)}" width="${f.ancho}" height="${f.alto}" alt="${esc(f.alt)}" loading="eager" fetchpriority="high" decoding="async">
         </picture>`;
   }
+  const f = c.t.hero.foto;
   return `
-        <picture class="hero__foto">
-          <source media="(min-width: 64em)" srcset="${esc(img.escritorio.src)}" width="${img.escritorio.ancho}" height="${img.escritorio.alto}">
-          <img src="${esc(img.movil.src)}" width="${img.movil.ancho}" height="${img.movil.alto}" alt="${esc(img.alt)}" loading="eager" fetchpriority="high" decoding="async">
-        </picture>`;
+        <div class="hero__escenario">
+          <picture class="hero__foto hero__foto--home">
+            <img src="${esc(f.src)}" width="${f.ancho}" height="${f.alto}" alt="${esc(img.alt)}" loading="eager" fetchpriority="high" decoding="async">
+          </picture>
+          <ul class="flotantes" tabindex="0" aria-label="${esc(c.t.hero.tarjetasEtiqueta)}">
+            ${c.t.hero.tarjetas
+              .map((x) => `<li class="flotante"><span class="flotante__icono">${ICONOS[x.icono]}</span><span class="flotante__texto"><strong>${esc(x.titulo)}</strong><span>${esc(x.texto)}</span></span></li>`)
+              .join("")}
+          </ul>
+        </div>`;
+}
+
+// Cinta de sectores: píldoras en movimiento continuo; la lista va duplicada para que el bucle no se corte
+function cinta(c) {
+  const li = c.sectores.map((s) => `<li>${esc(s.nombre)}</li>`).join("");
+  return `
+      <div class="cinta">
+        <div class="cinta__pista">
+          <ul class="cinta__lista" aria-label="${esc(c.t.cinta.etiqueta)}">${li}</ul>
+          <ul class="cinta__lista" aria-hidden="true">${li}</ul>
+        </div>
+      </div>`;
+}
+
+// Primera empresa: logo en gris si existe; si no, el nombre en texto. Preparado para una fila de hasta 6 logos.
+function primeraEmpresa(c) {
+  const pe = c.t.primeraEmpresa;
+  const logo = pe.logo || buscarLogo(pe.archivoLogo);
+  if (logo) {
+    return `
+        <h2 id="primero-titulo" class="primero__titulo">${esc(pe.tituloConLogos)}</h2>
+        <ul class="primero__logos">
+          <li><img src="${esc(logo)}" alt="${esc(pe.nombre)}" height="40" loading="lazy"></li>
+        </ul>`;
+  }
+  return `
+        <h2 id="primero-titulo" class="primero__titulo">${esc(pe.titulo)}</h2>
+        <p class="primero__nombre" translate="no">${esc(pe.nombre)}</p>
+        <p class="primero__sector">${esc(pe.sector)}</p>`;
 }
 
 export function inicio(c, sector = null) {
   const { t } = c;
   const h = t.hero;
   const cf = t.comoFunciona;
-  const pe = t.primeraEmpresa;
   const tes = t.testimonio;
 
   return `
 <main id="contenido" tabindex="-1">
 
-  <section class="hero" id="inicio" aria-labelledby="hero-titulo">
+  <section class="hero rejilla" id="inicio" aria-labelledby="hero-titulo">
     <div class="hero__marco">
       <div class="hero__texto">
         <h1 id="hero-titulo">${conAcento(h.titulo, h.tituloAcento)}</h1>
@@ -40,21 +75,15 @@ export function inicio(c, sector = null) {
           <a class="boton boton--contorno" href="#${esc(cf.id)}">${esc(h.secundario)}</a>
         </div>
       </div>
-      <div class="hero__visual">${heroFoto(c, sector)}</div>
-      ${sector ? "" : `<div class="hero__carrusel">${carrusel(c, { pequeno: true, id: "carrusel-inicio" })}</div>`}
+      <div class="hero__visual${sector ? "" : " hero__visual--home"}">${heroFoto(c, sector)}</div>
+      ${sector ? "" : `<div class="hero__cinta">${cinta(c)}</div>`}
     </div>
   </section>
 
   <div class="claro">
     <section class="primero" aria-labelledby="primero-titulo">
       <div class="contenedor">
-        <h2 id="primero-titulo" class="primero__titulo">${esc(pe.titulo)}</h2>
-        ${
-          pe.logo
-            ? `<img class="primero__logo" src="${esc(pe.logo)}" alt="${esc(pe.nombre)}" loading="lazy">`
-            : `<p class="primero__nombre" translate="no">${esc(pe.nombre)}</p>`
-        }
-        <p class="primero__sector">${esc(pe.sector)}</p>
+        ${primeraEmpresa(c)}
       </div>
     </section>
 

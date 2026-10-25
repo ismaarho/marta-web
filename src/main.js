@@ -153,3 +153,19 @@ function carrusel(el) {
 }
 
 document.querySelectorAll(".carrusel").forEach(carrusel);
+
+// ---------- Cinta de sectores: una píldora resaltada que cambia cada 2 s ----------
+
+for (const cinta of document.querySelectorAll(".cinta")) {
+  const listas = [...cinta.querySelectorAll(".cinta__lista")];
+  const n = listas[0]?.children.length ?? 0;
+  let i = 0;
+  const resaltar = () => {
+    for (const l of listas) [...l.children].forEach((li, j) => li.classList.toggle("activa", j === i));
+    i = (i + 1) % n;
+  };
+  if (n) {
+    resaltar();
+    setInterval(resaltar, 2000);
+  }
+}

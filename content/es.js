@@ -59,12 +59,24 @@ export default {
     linea: "No es dejadez. Es el oficio.",
     cta: "Pedir una demo por WhatsApp",
     secundario: "Ver cómo funciona",
+    // Tarjetas flotantes sobre la foto del hero (en móvil, fila deslizable bajo la foto)
+    tarjetasEtiqueta: "Lo que hace Marta",
+    tarjetas: [
+      { icono: "atiende", titulo: "Atendida en 9\u00A0s", texto: "Si no lo coges" },
+      { icono: "avisa", titulo: "Parte por WhatsApp", texto: "Urgente, normal o presupuesto" },
+      { icono: "check", titulo: "Ya en Aquaproc", texto: "Tratamiento de agua" },
+    ],
+    // Foto del hero de la home, recortada a 4:3
+    foto: { src: "/img/hero-movil.jpg", ancho: 900, alto: 1125 },
     imagen: {
       escritorio: { src: "/img/hero.jpg", ancho: 1600, alto: 900 },
       movil: { src: "/img/hero-movil.jpg", ancho: 900, alto: 1125 },
       alt: "Un técnico monta un aire acondicionado subido a una escalera mientras su móvil suena sobre la mesa.",
     },
   },
+
+  // Cinta de sectores bajo el hero (en movimiento; uno resaltado cada 2 s)
+  cinta: { etiqueta: "Sectores" },
 
   carrusel: {
     etiqueta: "Carrusel de sectores",
@@ -77,9 +89,13 @@ export default {
   primeraEmpresa: {
     titulo: "Primera empresa con Marta",
     nombre: "Aquaproc",
-    // Ruta del logo cuando esté disponible (p. ej. "/img/aquaproc.svg"); vacío = nombre en texto
+    // Ruta del logo cuando esté disponible (p. ej. "/img/aquaproc.svg"); vacío = nombre en texto.
+    // Si existe public/img/aquaproc.(svg|png|webp|jpg), la home lo usa sola.
     logo: "",
+    archivoLogo: "aquaproc",
     sector: "Tratamiento de agua",
+    // Rótulo encima de la fila de logos (hasta 6), cuando hay logo
+    tituloConLogos: "Ya atiende llamadas en",
   },
 
   // Datos del parte de ejemplo: ficticios a propósito. Cada sector cambia el motivo y la prioridad.
@@ -105,6 +121,7 @@ export default {
         titulo: "Atiende",
         texto: "Tu cliente llama a tu número de siempre. Si no lo coges, la llamada pasa a Marta.",
         // Línea de tiempo de ejemplo de una llamada
+        cifra: { valor: "9\u00A0s", leyenda: "hasta que Marta atiende" },
         hitos: [
           { tiempo: "0:00", texto: "Llamada a tu número", etiqueta: "Entrante" },
           { tiempo: "0:08", texto: "Sin respuesta", etiqueta: "Desvío" },
@@ -115,11 +132,13 @@ export default {
         titulo: "Pregunta",
         texto: "Marta es una recepcionista de voz con inteligencia artificial. Pregunta lo que necesitas para devolver la llamada.",
         datos: ["Nombre", "Teléfono", "Dirección", "Aviso", "Urgencia"],
+        cifra: { valor: "5 datos", leyenda: "en cada llamada" },
       },
       avisa: {
         titulo: "Avisa",
         texto:
           "Te llega el parte por WhatsApp, clasificado como urgente, normal o presupuesto. Tú decides cuándo y cómo devuelves la llamada.",
+        cifra: { valor: "3 prioridades", leyenda: "urgente, normal, presupuesto" },
       },
     },
   },
@@ -130,6 +149,16 @@ export default {
     nombre: "",
     cargo: "",
     empresa: "",
+  },
+
+  // Grabación de ejemplo de Marta atendiendo. Si src está vacío, no se muestra.
+  audio: {
+    marta: {
+      titulo: "Escucha a Marta",
+      src: "",
+      duracion: "",
+      transcripcion: "",
+    },
   },
 
   limites: {

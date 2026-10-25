@@ -1,5 +1,7 @@
 // Piezas comunes a todas las páginas. Todo se renderiza en el build, sin depender de JS.
 
+import { existsSync } from "node:fs";
+
 export const esc = (s) =>
   String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 
@@ -29,6 +31,15 @@ export const ICONOS = {
   pausa: icono("M7.5 5v10M12.5 5v10"),
   reproducir: icono("M7 5l8 5-8 5z"),
 };
+
+// Busca un logo en public/img/<nombre>.(svg|png|webp|jpg); devuelve su ruta pública o ""
+export function buscarLogo(nombre) {
+  if (!nombre) return "";
+  for (const ext of ["svg", "png", "webp", "jpg"]) {
+    if (existsSync(new URL(`../../public/img/${nombre}.${ext}`, import.meta.url))) return `/img/${nombre}.${ext}`;
+  }
+  return "";
+}
 
 const marca = (t) =>
   // Logo: símbolo B (burbuja de aviso, public/logo/simbolo-b.svg) + «Marta»
@@ -182,6 +193,10 @@ export function mensajeParte(c, parte = {}) {
 
 // ---------- Tres tarjetas: Atiende, Pregunta, Avisa ----------
 
+// Cifra grande al pie de cada tarjeta, con su leyenda
+const cifraTarjeta = (x) =>
+  x ? `<p class="tarjeta__cifra"><span class="tarjeta__valor">${esc(x.valor)}</span><span class="tarjeta__leyenda">${esc(x.leyenda)}</span></p>` : "";
+
 export function tarjetas(c, sector) {
   const ta = c.t.comoFunciona.tarjetas;
   const hitos = sector?.hitos ?? ta.atiende.hitos;
@@ -196,6 +211,7 @@ export function tarjetas(c, sector) {
                 .map((x) => `<li><span class="tiempo__t">${esc(x.tiempo)}</span><span class="tiempo__texto">${esc(x.texto)}</span><span class="pastilla">${esc(x.etiqueta)}</span></li>`)
                 .join("")}
             </ol>
+            ${cifraTarjeta(ta.atiende.cifra)}
           </article>
           <article class="tarjeta">
             <h3 class="tarjeta__titulo">${ICONOS.pregunta}${esc(ta.pregunta.titulo)}</h3>
@@ -203,16 +219,29 @@ export function tarjetas(c, sector) {
             <ul class="mini datos">
               ${datos.map((d) => `<li>${ICONOS.check}${esc(d)}</li>`).join("")}
             </ul>
+            ${cifraTarjeta(ta.pregunta.cifra)}
           </article>
           <article class="tarjeta">
             <h3 class="tarjeta__titulo">${ICONOS.avisa}${esc(ta.avisa.titulo)}</h3>
             <p class="tarjeta__texto">${esc(ta.avisa.texto)}</p>
             ${mensajeParte(c, sector?.parte)}
+            ${cifraTarjeta(ta.avisa.cifra)}
           </article>
         </div>`;
 }
 
 // ---------- Secciones repetidas ----------
+
+// Reproductor de una grabación de ejemplo; si no hay src, no se renderiza
+function audio(a) {
+  if (!a?.src) return "";
+  return `
+      <figure class="audio">
+        <figcaption class="audio__titulo">${esc(a.titulo)}${a.duracion ? ` <span class="audio__duracion">${esc(a.duracion)}</span>` : ""}</figcaption>
+        <audio controls preload="none" src="${esc(a.src)}"></audio>
+        ${a.transcripcion ? `<details class="audio__transcripcion"><summary>Transcripción</summary><p>${esc(a.transcripcion)}</p></details>` : ""}
+      </figure>`;
+}
 
 export function oscuro(c, { conIsmael = true } = {}) {
   const t = c.t;
@@ -231,6 +260,7 @@ export function oscuro(c, { conIsmael = true } = {}) {
       </div>`
           : ""
       }
+      ${audio(t.audio?.marta)}
     </div>
   </section>`;
 }
@@ -275,7 +305,7 @@ export function preguntas(c, extra = []) {
 export function cierre(c) {
   const f = c.t.final;
   return `
-  <section class="cierre" aria-labelledby="cierre-titulo">
+  <section class="cierre rejilla" aria-labelledby="cierre-titulo">
     <div class="contenedor">
       <div class="cierre__tarjeta">
         <h2 id="cierre-titulo">${esc(f.titulo)}</h2>

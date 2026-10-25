@@ -47,7 +47,7 @@ for (const ruta of PAGINAS) {
       // Elementos que se salen de la ventana, salvo los recortados a propósito (carrusel)
       const desbordan = [...document.querySelectorAll("body *")]
         .filter((el) => {
-          if (el.closest(".sr, .saltar, .carrusel__escena")) return false;
+          if (el.closest(".sr, .saltar, .carrusel__escena, .cinta, .flotantes")) return false;
           const r = el.getBoundingClientRect();
           return r.width > 0 && (r.right > ancho + 1 || r.left < -1);
         })
