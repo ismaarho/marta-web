@@ -24,7 +24,7 @@ export function paginas(sitio = "") {
     ),
     pagina("/sectores/", { titulo: t.paginaSectores.meta.titulo, descripcion: t.paginaSectores.meta.descripcion, og: "/og/sectores.jpg" }, paginaSectores(c)),
     ...sectores.map((s) =>
-      pagina(`/sectores/${s.slug}/`, { titulo: s.meta.titulo, descripcion: s.meta.descripcion, og: `/og/sectores/${s.slug}.jpg`, ogAlt: s.foto.alt }, inicio(c, s))
+      pagina(`/sectores/${s.slug}/`, { titulo: s.meta.titulo, descripcion: s.meta.descripcion, og: `/og/sectores/${s.slug}.jpg`, ogAlt: s.foto.alt || s.meta.titulo }, inicio(c, s))
     ),
     pagina("/clientes/", { titulo: t.paginaClientes.meta.titulo, descripcion: t.paginaClientes.meta.descripcion, og: "/og/clientes.jpg" }, clientes(c)),
   ];

@@ -13,5 +13,6 @@ import mudanzas from "./mudanzas.js";
 import reparto_de_gasoleo from "./reparto-de-gasoleo.js";
 import talleres from "./talleres.js";
 import cerrajeria from "./cerrajeria.js";
+import tratamiento_de_agua from "./tratamiento-de-agua.js";
 
-export default [climatizacion, fontaneria, electricidad, tejados, puertas_de_garaje, reformas, control_de_plagas, reparacion_de_danos, recogida_de_escombros, mudanzas, reparto_de_gasoleo, talleres, cerrajeria];
+export default [climatizacion, fontaneria, electricidad, tejados, puertas_de_garaje, reformas, control_de_plagas, reparacion_de_danos, recogida_de_escombros, mudanzas, reparto_de_gasoleo, talleres, cerrajeria, tratamiento_de_agua];

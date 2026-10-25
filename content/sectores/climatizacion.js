@@ -11,7 +11,7 @@ export default {
     "mini": "/img/sectores/mini/climatizacion.jpg",
     "ancho": 900,
     "alto": 1125,
-    "alt": "Un técnico monta un aire acondicionado en un salón."
+    "alt": "Un técnico revisa con manómetros la unidad exterior de un aire acondicionado en un balcón."
   },
   "meta": {
     "titulo": "Marta para empresas de climatización: atiende las llamadas que no puedes coger",

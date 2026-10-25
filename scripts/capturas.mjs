@@ -11,7 +11,7 @@ import { WHATSAPP } from "../content/es.js";
 const DIST = new URL("../dist/", import.meta.url).pathname;
 const SALIDA = new URL("../capturas/", import.meta.url).pathname;
 const TIPOS = { ".html": "text/html", ".css": "text/css", ".js": "text/javascript", ".svg": "image/svg+xml", ".png": "image/png", ".jpg": "image/jpeg", ".woff2": "font/woff2", ".xml": "application/xml", ".txt": "text/plain" };
-const PAGINAS = ["/", "/como-funciona/", "/sectores/", "/sectores/fontaneria/", "/sectores/mudanzas/", "/clientes/"];
+const PAGINAS = ["/", "/como-funciona/", "/sectores/", "/sectores/fontaneria/", "/sectores/mudanzas/", "/sectores/tratamiento-de-agua/", "/clientes/"];
 
 const servidor = createServer(async (req, res) => {
   let ruta = normalize(decodeURIComponent(new URL(req.url, "http://x").pathname)).replace(/^\/+/, "");
