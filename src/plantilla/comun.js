@@ -35,13 +35,14 @@ const marca = (t) =>
 
 // ---------- <head> ----------
 
-export function cabeza(c, { titulo, descripcion, ruta, og, ogAlt }) {
+export function cabeza(c, { titulo, descripcion, ruta, og, ogAlt, noindex = false }) {
   const base = c.sitio.replace(/\/$/, "");
   const ogUrl = `${base}${og}`;
   return `
 <title>${esc(titulo)}</title>
 <meta name="description" content="${esc(descripcion)}">
-${base ? `<link rel="canonical" href="${esc(base + ruta)}">` : ""}
+${noindex ? '<meta name="robots" content="noindex">' : ""}
+${base && !noindex ? `<link rel="canonical" href="${esc(base + ruta)}">` : ""}
 <meta property="og:type" content="website">
 <meta property="og:locale" content="${esc(c.t.locale)}">
 <meta property="og:site_name" content="${esc(c.t.marca)}">

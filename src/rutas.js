@@ -5,13 +5,16 @@ import sectores from "../content/sectores/index.js";
 import { cabeza, cabecera, pie } from "./plantilla/comun.js";
 import { inicio } from "./plantilla/inicio.js";
 import { comoFunciona, sectores as paginaSectores, clientes } from "./plantilla/paginas.js";
+import { logo } from "./plantilla/logo.js";
 
 export function paginas(sitio = "") {
   const c = { t, sectores, whatsapp: WHATSAPP, sitio };
-  const pagina = (ruta, meta, cuerpo) => ({
+  // oculta: página de trabajo, sin cabecera ni pie, con noindex y fuera del sitemap
+  const pagina = (ruta, meta, cuerpo, { oculta = false } = {}) => ({
     ruta,
-    cabeza: cabeza(c, { ...meta, ruta }),
-    cuerpo: cabecera(c) + cuerpo + pie(c),
+    oculta,
+    cabeza: cabeza(c, { ...meta, ruta, noindex: oculta }),
+    cuerpo: oculta ? cuerpo : cabecera(c) + cuerpo + pie(c),
     og: meta.og,
   });
 
@@ -27,6 +30,7 @@ export function paginas(sitio = "") {
       pagina(`/sectores/${s.slug}/`, { titulo: s.meta.titulo, descripcion: s.meta.descripcion, og: `/og/sectores/${s.slug}.jpg`, ogAlt: s.foto.alt || s.meta.titulo }, inicio(c, s))
     ),
     pagina("/clientes/", { titulo: t.paginaClientes.meta.titulo, descripcion: t.paginaClientes.meta.descripcion, og: "/og/clientes.jpg" }, clientes(c)),
+    pagina("/logo/", { titulo: "Logo de Marta: propuestas", descripcion: "Página de trabajo con tres propuestas de logo.", og: "/og/inicio.jpg" }, logo(), { oculta: true }),
   ];
 }
 

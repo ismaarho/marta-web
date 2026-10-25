@@ -52,7 +52,7 @@ function marta() {
         }
         // sitemap.xml y robots.txt (el sitemap solo si se conoce la dirección del sitio)
         if (SITIO) {
-          const urls = paginas(SITIO).map((p) => `  <url><loc>${SITIO}${p.ruta}</loc></url>`).join("\n");
+          const urls = paginas(SITIO).filter((p) => !p.oculta).map((p) => `  <url><loc>${SITIO}${p.ruta}</loc></url>`).join("\n");
           this.emitFile({
             type: "asset",
             fileName: "sitemap.xml",

@@ -1680,3 +1680,101 @@ html:not(.js) .carrusel__controles {
 .oscuro + .faq {
   padding-top: var(--seccion);
 }
+
+/* ---------- /logo/: página de trabajo con las propuestas de logo ---------- */
+
+.logo-pagina {
+  padding-block: 3rem 6rem;
+  background: var(--blanco);
+}
+.logo-pagina__titulo {
+  font-size: clamp(2.25rem, 1.9rem + 1.6vw, 3rem);
+}
+.logo-pagina__nota {
+  margin-top: 0.5rem;
+  color: var(--tinta-2);
+}
+.logo-propuesta {
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--linea);
+}
+.logo-propuesta h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+.logo-propuesta > p {
+  margin-top: 0.5rem;
+  max-width: 48rem;
+  color: var(--tinta-2);
+}
+.logo-propuesta code {
+  font-size: 0.875em;
+}
+.logo-muestra {
+  margin: 1.5rem 0 0;
+  padding: 1.5rem;
+  border: 1px solid var(--linea);
+  border-radius: 12px;
+  overflow-x: auto;
+}
+.logo-muestra figcaption {
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+.logo-muestra--tinta {
+  background: var(--blanco);
+  color: var(--tinta);
+}
+.logo-muestra--marino {
+  background: var(--cabecera);
+  border-color: var(--cabecera);
+  color: var(--blanco);
+}
+.logo-muestra--una {
+  background: var(--blanco);
+  color: var(--acento);
+}
+.logo-muestra--una figcaption {
+  color: var(--tinta);
+}
+.logo-tamanos {
+  display: flex;
+  align-items: flex-end;
+  gap: 2rem;
+  width: max-content;
+}
+.logo-tamano {
+  display: grid;
+  justify-items: center;
+  gap: 0.5rem;
+}
+.logo-lienzo {
+  display: block;
+  line-height: 0;
+}
+.logo-cota {
+  font-size: 0.75rem;
+  opacity: 0.8;
+}
+.logo-marcas {
+  display: grid;
+  gap: 0.5rem;
+}
+.logo-marcas__fila {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.5rem 3rem;
+  padding: 1.5rem;
+  border-radius: 8px;
+  width: max-content;
+  min-width: 100%;
+}
+.logo-marcas__fila span {
+  line-height: 0;
+}
+.logo-muestra--marcas {
+  color: var(--tinta);
+}
