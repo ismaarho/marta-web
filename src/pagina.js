@@ -4,27 +4,47 @@
 const esc = (s) =>
   String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 
+// Envuelve en <span class="acento"> el trozo indicado del texto
+function conAcento(texto, acento) {
+  const i = acento ? texto.toLowerCase().indexOf(acento.toLowerCase()) : -1;
+  if (i < 0) return esc(texto);
+  return `${esc(texto.slice(0, i))}<span class="acento">${esc(texto.slice(i, i + acento.length))}</span>${esc(texto.slice(i + acento.length))}`;
+}
+
 // Enlace a WhatsApp: siempre la misma URL, abre en pestaña nueva
 function enlaceWhatsapp(t, url, texto, clase = "boton") {
   return `<a class="${clase}" href="${esc(url)}" target="_blank" rel="noopener">${esc(texto)}<span class="sr"> ${esc(t.abreWhatsapp)}</span></a>`;
 }
 
-// El parte: objeto central del diseño. Variante "mini" para el visual del hero.
-function parte(t, { mini = false } = {}) {
+// Iconos propios de trazo, 20×20, en el color del texto
+const icono = (d) =>
+  `<svg class="icono" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="${d}" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const ICONOS = {
+  atiende: icono("M6.2 2.8 8 6.6 6.4 8.1a9.5 9.5 0 0 0 5.5 5.5l1.5-1.6 3.8 1.8-.6 2.6a1.6 1.6 0 0 1-1.7 1.2A13.6 13.6 0 0 1 2.4 5.1a1.6 1.6 0 0 1 1.2-1.7z"),
+  pregunta: icono("M4 4.5h12M4 10h12M4 15.5h7M14 15l1.5 1.5L18 14"),
+  avisa: icono("M3.5 4.5h13v9h-7l-4 3v-3h-2z M7 8.2h6 M7 10.8h4"),
+  check: icono("M4.5 10.5 8 14l7.5-8"),
+};
+
+// El parte, como mensaje de WhatsApp dentro de un móvil simplificado
+function mensajeParte(t) {
   const e = t.ejemplo;
-  const campos = mini ? e.campos.filter((c) => ["Motivo", "Cliente", "Teléfono", "Dirección"].includes(c.etiqueta)) : e.campos;
   return `
-  <article class="parte${mini ? " parte--mini" : ""}" ${mini ? 'aria-hidden="true"' : `aria-label="${esc(e.sello)}: ${esc(e.cabecera)}"`}>
-    <span class="sello">${esc(e.sello)}</span>
-    <header class="parte__cabeza">
-      <span class="prioridad prioridad--urgente">${esc(e.prioridad)}</span>
-      <span class="parte__titulo">${esc(e.cabecera)}</span>
-    </header>
-    <dl class="parte__campos">
-      ${campos.map((c) => `<div><dt>${esc(c.etiqueta)}</dt><dd>${esc(c.valor)}</dd></div>`).join("")}
-    </dl>
-    ${mini ? "" : `<p class="parte__pie">${esc(e.pie)}</p>`}
-  </article>`;
+  <div class="movil">
+    <div class="movil__barra"><span class="movil__avatar" aria-hidden="true">${esc(e.remitente.slice(0, 1))}</span>${esc(e.remitente)}</div>
+    <div class="movil__chat">
+      <article class="mensaje" aria-label="${esc(e.sello)}: ${esc(e.cabecera)}">
+        <div class="mensaje__cabeza">
+          <span class="etiqueta-urgente">${esc(e.prioridad)}</span>
+          <span class="sello">${esc(e.sello)}</span>
+        </div>
+        <p class="mensaje__titulo">${esc(e.cabecera)}</p>
+        <dl class="mensaje__campos">
+          ${e.campos.map((c) => `<div><dt>${esc(c.etiqueta)}</dt><dd>${esc(c.valor)}</dd></div>`).join("")}
+        </dl>
+      </article>
+    </div>
+  </div>`;
 }
 
 export function cabeza(t, sitio = "") {
@@ -48,9 +68,11 @@ ${base ? `<meta property="og:url" content="${esc(base)}/">` : ""}
 
 export function pagina(t, WHATSAPP) {
   const h = t.hero;
-  const v = t.visual;
+  const img = h.imagen;
   const cf = t.comoFunciona;
-  const p = t.parte;
+  const ta = cf.tarjetas;
+  const pi = t.primerInstalador;
+  const tes = t.testimonio;
 
   return `
 <a class="saltar" href="#contenido">${esc(t.saltar)}</a>
@@ -67,155 +89,152 @@ export function pagina(t, WHATSAPP) {
         ${t.nav.enlaces.map((l) => `<li><a href="${esc(l.href)}">${esc(l.texto)}</a></li>`).join("")}
       </ul>
     </nav>
-    ${enlaceWhatsapp(t, WHATSAPP, t.nav.cta, "boton boton--cabecera")}
+    ${enlaceWhatsapp(t, WHATSAPP, t.nav.cta, "boton boton--blanco boton--cabecera")}
   </div>
 </header>
 
 <main id="contenido" tabindex="-1">
 
   <section class="hero" id="inicio" aria-labelledby="hero-titulo">
-    <div class="contenedor hero__rejilla">
+    <div class="hero__marco">
       <div class="hero__texto">
-        <h1 id="hero-titulo"><span>${esc(h.titulo.split(". ")[0])}.</span> <span>${esc(h.titulo.split(". ").slice(1).join(". "))}</span></h1>
+        <h1 id="hero-titulo">${conAcento(h.titulo, h.tituloAcento)}</h1>
         <p class="hero__flujo">${esc(h.flujo)}</p>
         <div class="hero__acciones">
-          ${enlaceWhatsapp(t, WHATSAPP, h.cta, "boton boton--grande")}
-          <a class="enlace" href="#como-funciona">${esc(h.secundario)}</a>
+          ${enlaceWhatsapp(t, WHATSAPP, h.cta, "boton")}
+          <a class="boton boton--contorno" href="#${esc(cf.id)}">${esc(h.secundario)}</a>
         </div>
-        <p class="hero__nota">${esc(h.nota)}</p>
       </div>
-
-      <div class="visual" role="img" aria-label="${esc(v.resumen)}">
-        <div class="v-paso v-llamada" aria-hidden="true">
-          <b>${esc(v.llamada)}</b><span class="v-estado">${esc(v.sinRespuesta)}</span>
-        </div>
-        <div class="v-tramo v-tramo--1" aria-hidden="true"><span>${esc(v.desvio)}</span></div>
-        <div class="v-paso v-marta" aria-hidden="true">
-          <b>${esc(v.marta)}</b>
-        </div>
-        <div class="v-tramo v-tramo--2" aria-hidden="true"><span>${esc(v.llega)}</span></div>
-        <div class="v-salida">${parte(t, { mini: true })}</div>
-      </div>
-    </div>
-  </section>
-
-  <section class="seccion problema" id="${esc(t.problema.id)}" aria-labelledby="problema-titulo">
-    <div class="contenedor">
-      <h2 id="problema-titulo">${esc(t.problema.titulo)}</h2>
-      <p class="problema__intro">${esc(t.problema.intro)}</p>
-      <ul class="problema__lista">
-        ${t.problema.situaciones.map((s) => `<li>${esc(s)}</li>`).join("")}
-      </ul>
-      <p class="problema__cierre">${esc(t.problema.cierre)}</p>
-    </div>
-  </section>
-
-  <section class="seccion como" id="${esc(cf.id)}" aria-labelledby="como-titulo">
-    <div class="contenedor">
-      <h2 id="como-titulo">${esc(cf.titulo)}</h2>
-      <ol class="pasos">
-        ${cf.pasos
-          .map(
-            (s, i) => `<li class="paso paso--${s.nodo}">
-          <div class="paso__nodo" aria-hidden="true">${esc(s.etiqueta)}</div>
-          <div class="paso__texto">
-            <h3>${esc(s.titulo)}</h3>
-            <p>${esc(s.texto)}</p>
-            ${i === 0 ? `<p class="paso__espera">${esc(cf.espera)}</p>` : ""}
-          </div>
-        </li>`
-          )
-          .join("")}
-      </ol>
-      <div class="limites">
-        <h3>${esc(cf.limites.titulo)}</h3>
-        <p>${esc(cf.limites.texto)}</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="seccion ejemplo" id="${esc(p.id)}" aria-labelledby="parte-titulo">
-    <div class="contenedor ejemplo__rejilla">
-      <div class="ejemplo__texto">
-        <h2 id="parte-titulo">${esc(p.titulo)}</h2>
-        <p class="entradilla">${esc(p.intro)}</p>
-        <ul class="ejemplo__notas">
-          ${p.notas.map((n) => `<li><h3>${esc(n.titulo)}</h3><p>${esc(n.texto)}</p></li>`).join("")}
+      <div class="hero__visual">
+        <picture class="hero__foto">
+          <source media="(min-width: 64em)" srcset="${esc(img.escritorio.src)}" width="${img.escritorio.ancho}" height="${img.escritorio.alto}">
+          <img src="${esc(img.movil.src)}" width="${img.movil.ancho}" height="${img.movil.alto}" alt="${esc(img.alt)}" loading="eager" fetchpriority="high" decoding="async">
+        </picture>
+        <ul class="cinta" aria-label="${esc(t.oficios.etiqueta)}">
+          ${t.oficios.lista.map((o) => `<li>${esc(o)}</li>`).join("")}
         </ul>
       </div>
-      <div class="ejemplo__objeto">
-        ${parte(t)}
-        <div class="prioridades">
-          <h3>${esc(p.prioridades.titulo)}</h3>
-          <ul>
-            ${p.prioridades.lista
-              .map((x) => `<li><span class="prioridad prioridad--${x.clave}">${esc(x.nombre)}</span><span>${esc(x.texto)}</span></li>`)
-              .join("")}
-          </ul>
-        </div>
-      </div>
     </div>
   </section>
 
-  <section class="seccion oficios" id="${esc(t.oficios.id)}" aria-labelledby="oficios-titulo">
+  <div class="claro">
+    <section class="primero" aria-labelledby="primero-titulo">
+      <div class="contenedor">
+        <h2 id="primero-titulo" class="primero__titulo">${esc(pi.titulo)}</h2>
+        ${
+          pi.logo
+            ? `<img class="primero__logo" src="${esc(pi.logo)}" alt="${esc(pi.nombre)}" loading="lazy">`
+            : `<p class="primero__nombre" translate="no">${esc(pi.nombre)}</p>`
+        }
+        <p class="primero__sector">${esc(pi.sector)}</p>
+      </div>
+    </section>
+
+    <section class="producto" id="${esc(cf.id)}" aria-labelledby="producto-titulo">
+      <div class="contenedor">
+        <h2 id="producto-titulo" class="titular">${conAcento(cf.titulo, cf.tituloAcento)}</h2>
+        <div class="bandeja tarjetas">
+          <article class="tarjeta">
+            <h3 class="tarjeta__titulo">${ICONOS.atiende}${esc(ta.atiende.titulo)}</h3>
+            <p class="tarjeta__texto">${esc(ta.atiende.texto)}</p>
+            <ol class="mini tiempo">
+              ${ta.atiende.hitos
+                .map((x) => `<li><span class="tiempo__t">${esc(x.tiempo)}</span><span class="tiempo__texto">${esc(x.texto)}</span><span class="pastilla">${esc(x.etiqueta)}</span></li>`)
+                .join("")}
+            </ol>
+          </article>
+          <article class="tarjeta">
+            <h3 class="tarjeta__titulo">${ICONOS.pregunta}${esc(ta.pregunta.titulo)}</h3>
+            <p class="tarjeta__texto">${esc(ta.pregunta.texto)}</p>
+            <ul class="mini datos">
+              ${ta.pregunta.datos.map((d) => `<li>${ICONOS.check}${esc(d)}</li>`).join("")}
+            </ul>
+          </article>
+          <article class="tarjeta">
+            <h3 class="tarjeta__titulo">${ICONOS.avisa}${esc(ta.avisa.titulo)}</h3>
+            <p class="tarjeta__texto">${esc(ta.avisa.texto)}</p>
+            ${mensajeParte(t)}
+          </article>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  ${
+    tes.texto
+      ? `<section class="testimonio" aria-label="${esc(tes.empresa || tes.nombre)}">
     <div class="contenedor">
-      <h2 id="oficios-titulo">${esc(t.oficios.titulo)}</h2>
-      <ul class="oficios__lista">
-        ${t.oficios.lista.map((o) => `<li><h3>${esc(o.nombre)}</h3><p>${esc(o.texto)}</p></li>`).join("")}
-      </ul>
-      <p class="oficios__real">${esc(t.oficios.real)}</p>
+      <figure class="cita">
+        <blockquote><p>${esc(tes.texto)}</p></blockquote>
+        <figcaption><strong>${esc(tes.nombre)}</strong>${tes.cargo ? `<span>${esc(tes.cargo)}${tes.empresa ? `, ${esc(tes.empresa)}` : ""}</span>` : ""}</figcaption>
+      </figure>
+    </div>
+  </section>`
+      : ""
+  }
+
+  <section class="oscuro" id="${esc(t.ismael.id)}">
+    <div class="contenedor oscuro__rejilla">
+      <div class="oscuro__bloque">
+        <h2>${esc(t.limites.titulo)}</h2>
+        <p>${esc(t.limites.texto)}</p>
+      </div>
+      <div class="oscuro__bloque">
+        <h2>${esc(t.ismael.titulo)}</h2>
+        ${t.ismael.texto.map((x) => `<p>${esc(x)}</p>`).join("")}
+      </div>
     </div>
   </section>
 
-  <section class="seccion precio" id="${esc(t.precio.id)}" aria-labelledby="precio-titulo">
-    <div class="contenedor precio__rejilla">
-      <div>
-        <h2 id="precio-titulo">${esc(t.precio.titulo)}</h2>
-        <p class="precio__cifra"><span class="precio__num">${esc(t.precio.cifra)}</span><span class="precio__unidad">${esc(t.precio.unidad)}</span></p>
-      </div>
-      <div class="precio__detalle">
-        <div class="piloto">
-          <h3>${esc(t.precio.piloto.titulo)}</h3>
-          <p>${esc(t.precio.piloto.texto)}</p>
+  <section class="precio" id="${esc(t.precio.id)}" aria-labelledby="precio-titulo">
+    <div class="contenedor">
+      <h2 id="precio-titulo" class="titular">${esc(t.precio.titulo)}</h2>
+      <div class="bandeja bandeja--estrecha">
+        <div class="tarjeta precio__tarjeta">
+          <p class="precio__cifra"><span class="precio__num">${esc(t.precio.cifra)}</span> <span class="precio__unidad">${esc(t.precio.unidad)}</span></p>
+          <div class="piloto">
+            <h3>${esc(t.precio.piloto.titulo)}</h3>
+            <p>${esc(t.precio.piloto.texto)}</p>
+          </div>
+          <p class="precio__condiciones">${esc(t.precio.condiciones)}</p>
+          ${enlaceWhatsapp(t, WHATSAPP, t.precio.cta, "boton")}
         </div>
-        <p class="precio__condiciones">${esc(t.precio.condiciones)}</p>
-        ${enlaceWhatsapp(t, WHATSAPP, t.precio.cta, "boton boton--grande")}
       </div>
     </div>
   </section>
 
-  <section class="seccion ismael" id="${esc(t.ismael.id)}" aria-labelledby="ismael-titulo">
-    <div class="contenedor ismael__rejilla">
-      <h2 id="ismael-titulo">${esc(t.ismael.titulo)}</h2>
-      <div>${t.ismael.texto.map((x) => `<p>${esc(x)}</p>`).join("")}</div>
-    </div>
-  </section>
-
-  <section class="seccion faq" id="${esc(t.faq.id)}" aria-labelledby="faq-titulo">
-    <div class="contenedor faq__rejilla">
-      <h2 id="faq-titulo">${esc(t.faq.titulo)}</h2>
-      <div class="faq__lista">
+  <section class="faq" id="${esc(t.faq.id)}" aria-labelledby="faq-titulo">
+    <div class="contenedor">
+      <h2 id="faq-titulo" class="titular">${esc(t.faq.titulo)}</h2>
+      <div class="bandeja bandeja--estrecha faq__lista">
         ${t.faq.lista
-          .map((f) => `<details><summary><span>${esc(f.p)}</span><span class="faq__signo" aria-hidden="true"></span></summary><p>${esc(f.r)}</p></details>`)
+          .map((f) => `<details class="tarjeta"><summary><span>${esc(f.p)}</span><span class="faq__signo" aria-hidden="true"></span></summary><p>${esc(f.r)}</p></details>`)
           .join("")}
       </div>
     </div>
   </section>
 
-  <section class="seccion final" aria-labelledby="final-titulo">
+  <section class="cierre" aria-labelledby="cierre-titulo">
     <div class="contenedor">
-      <h2 id="final-titulo">${esc(t.final.titulo)}</h2>
-      <p>${esc(t.final.texto)}</p>
-      ${enlaceWhatsapp(t, WHATSAPP, t.final.cta, "boton boton--grande")}
+      <div class="cierre__tarjeta">
+        <h2 id="cierre-titulo">${esc(t.final.titulo)}</h2>
+        <p>${esc(t.final.texto)}</p>
+        ${enlaceWhatsapp(t, WHATSAPP, t.final.cta, "boton boton--blanco")}
+      </div>
     </div>
   </section>
 
 </main>
 
 <footer class="pie">
-  <div class="contenedor pie__fila">
-    <span class="marca marca--pie"><span class="marca__chapa" aria-hidden="true"></span><span translate="no">${esc(t.marca)}</span></span>
-    ${enlaceWhatsapp(t, WHATSAPP, t.pie.whatsapp, "enlace enlace--pie")}
+  <div class="pie__banda">
+    <div class="contenedor pie__fila">
+      <span class="marca marca--pie"><span class="marca__chapa" aria-hidden="true"></span><span translate="no">${esc(t.marca)}</span></span>
+      ${enlaceWhatsapp(t, WHATSAPP, t.pie.whatsapp, "pie__enlace")}
+    </div>
+  </div>
+  <div class="contenedor pie__nota">
+    <p>${esc(t.pie.imagenIA)}</p>
   </div>
 </footer>`;
 }

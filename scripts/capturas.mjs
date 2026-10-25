@@ -36,7 +36,7 @@ const bien = (m) => console.log("✓ " + m);
 for (const ancho of [375, 1280]) {
   const pagina = await navegador.newPage({ viewport: { width: ancho, height: ancho < 600 ? 812 : 800 } });
   await pagina.goto(url, { waitUntil: "networkidle" });
-  await pagina.waitForTimeout(3800); // deja terminar el gesto del hero
+  await pagina.waitForTimeout(800);
 
   await pagina.screenshot({ path: `${SALIDA}hero-${ancho}.png` });
   await pagina.screenshot({ path: `${SALIDA}pagina-${ancho}.png`, fullPage: true });
@@ -69,7 +69,7 @@ for (const ancho of [375, 1280]) {
   datos.whatsapp.every((h) => h === WHATSAPP) ? bien(`${ancho}px: ${datos.whatsapp.length} enlaces a WhatsApp, todos con la URL exacta`) : mal(`${ancho}px: hay enlaces a WhatsApp distintos`);
   datos.tel ? mal(`${ancho}px: hay enlaces tel: o mailto:`) : bien(`${ancho}px: sin tel: ni mailto:`);
   datos.vacios ? mal(`${ancho}px: ${datos.vacios} enlaces "#" o vacíos`) : bien(`${ancho}px: sin enlaces vacíos`);
-  datos.selloVisible.every(Boolean) ? bien(`${ancho}px: sello "Ejemplo" visible en ${datos.selloVisible.length} partes`) : mal(`${ancho}px: algún sello no se ve`);
+  datos.selloVisible.length && datos.selloVisible.every(Boolean) ? bien(`${ancho}px: sello "Ejemplo" visible en ${datos.selloVisible.length} partes`) : mal(`${ancho}px: algún sello no se ve`);
 
   if (ancho < 600) {
     // Menú móvil: abre, enlaces visibles, Escape cierra y devuelve el foco
@@ -88,7 +88,6 @@ for (const ancho of [375, 1280]) {
   await pagina.keyboard.press("Tab");
   await pagina.keyboard.press("Tab");
   await pagina.keyboard.press("Tab");
-  if (ancho < 600) await pagina.keyboard.press("Tab");
   await pagina.screenshot({ path: `${SALIDA}foco-${ancho}.png` });
   await pagina.close();
 }

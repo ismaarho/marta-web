@@ -15,7 +15,7 @@ export default {
     descripcion:
       "Si no coges el teléfono, la llamada pasa a Marta. Apunta nombre, teléfono, dirección, avería y urgencia, y te manda el parte por WhatsApp. Para instaladores de toda España.",
     ogAlt:
-      "Marta. Tú trabaja, Marta atiende el teléfono. Parte de ejemplo de una llamada urgente por una fuga de agua.",
+      "Tú trabaja. Marta atiende el teléfono. Un instalador monta un aire acondicionado mientras su móvil suena sobre la mesa.",
   },
 
   saltar: "Saltar al contenido",
@@ -28,11 +28,11 @@ export default {
     cerrar: "Cerrar menú",
     enlaces: [
       { href: "#como-funciona", texto: "Cómo funciona" },
-      { href: "#parte", texto: "El parte" },
+      { href: "#quien", texto: "Quién está detrás" },
       { href: "#precio", texto: "Precio" },
       { href: "#preguntas", texto: "Preguntas" },
     ],
-    cta: "Demo por WhatsApp",
+    cta: "Pedir demo",
   },
 
   // Texto que se añade a los enlaces de WhatsApp para lectores de pantalla
@@ -40,132 +40,86 @@ export default {
 
   hero: {
     titulo: "Tú trabaja. Marta atiende el teléfono.",
+    // Parte del titular que va en el color de acento
+    tituloAcento: "Marta atiende",
     flujo:
       "Si no lo coges en unos segundos, la llamada pasa a Marta. Ella apunta los datos del cliente y te manda el parte por WhatsApp.",
     cta: "Pedir una demo por WhatsApp",
-    nota: "Te contesta Ismael en persona.",
     secundario: "Ver cómo funciona",
+    imagen: {
+      escritorio: { src: "/img/hero.jpg", ancho: 1600, alto: 900 },
+      movil: { src: "/img/hero-movil.jpg", ancho: 900, alto: 1125 },
+      alt: "Un instalador monta un aire acondicionado subido a una escalera mientras su móvil suena sobre la mesa.",
+    },
   },
 
-  // Visual principal: la llamada que se convierte en parte
-  visual: {
-    resumen:
-      "Esquema: un cliente llama a tu número, no lo coges, la llamada pasa a Marta y te llega un parte por WhatsApp marcado como urgente.",
-    llamada: "Llamada a tu número",
-    sinRespuesta: "No lo coges",
-    desvio: "Pasa a Marta",
-    marta: "Marta atiende y pregunta",
-    llega: "Te llega el parte por WhatsApp",
+  oficios: {
+    etiqueta: "Oficios",
+    lista: ["Climatización", "Fontanería", "Electricidad", "Tratamiento de agua"],
+  },
+
+  primerInstalador: {
+    titulo: "Primer instalador con Marta",
+    nombre: "Aquaproc",
+    // Ruta del logo cuando esté disponible (p. ej. "/img/aquaproc.svg"); vacío = nombre en texto
+    logo: "",
+    sector: "Tratamiento de agua",
   },
 
   // Datos del parte de ejemplo: ficticios a propósito
   ejemplo: {
     sello: "Ejemplo",
+    remitente: "Marta",
     cabecera: "Nueva llamada atendida por Marta",
     prioridad: "Urgente",
     campos: [
       { etiqueta: "Motivo", valor: "Fuga de agua debajo de la caldera" },
       { etiqueta: "Cliente", valor: "Laura Martín" },
-      { etiqueta: "Teléfono", valor: "600\u00A0000\u00A0000" },
+      { etiqueta: "Teléfono", valor: "600 000 000" },
       { etiqueta: "Dirección", valor: "Calle Inexistente, 12, 2.º B" },
-      { etiqueta: "Vivienda", valor: "Piso" },
-      {
-        etiqueta: "Notas",
-        valor: "Caldera de gas mural. Está en casa toda la tarde. El portero no funciona: llamar al móvil al llegar.",
-      },
     ],
-    pie: "Llamó desde el 600\u00A0000\u00A0000. Duración: 1\u00A0min 34\u00A0s",
-  },
-
-  problema: {
-    id: "problema",
-    titulo: "El teléfono suena justo cuando no puedes cogerlo.",
-    intro: "No es dejadez. Es el oficio.",
-    situaciones: [
-      "Estás debajo de un fregadero con las manos mojadas.",
-      "Estás en lo alto de la escalera colgando un split.",
-      "Vas conduciendo de un aviso al siguiente.",
-    ],
-    cierre:
-      "Y quien llama con una avería no suele esperar. Si nadie contesta, prueba con el siguiente.",
   },
 
   comoFunciona: {
     id: "como-funciona",
     titulo: "Tu número no cambia. Solo cambia quién contesta cuando tú no puedes.",
-    // Cada paso es un nodo del diagrama (llamada → Marta → parte); etiqueta = texto del nodo
-    espera: "Unos segundos sin respuesta",
-    pasos: [
-      {
-        nodo: "llamada",
-        etiqueta: "Llamada",
-        titulo: "Tu cliente llama a tu número de siempre.",
-        texto: "No tiene que apuntar otro número. Si lo coges tú, todo sigue igual.",
+    tituloAcento: "quién contesta",
+    tarjetas: {
+      atiende: {
+        titulo: "Atiende",
+        texto: "Tu cliente llama a tu número de siempre. Si no lo coges, la llamada pasa a Marta.",
+        // Línea de tiempo de ejemplo de una llamada
+        hitos: [
+          { tiempo: "0:00", texto: "Llamada a tu número", etiqueta: "Entrante" },
+          { tiempo: "0:08", texto: "Sin respuesta", etiqueta: "Desvío" },
+          { tiempo: "0:09", texto: "Pasa a Marta", etiqueta: "Atendida" },
+        ],
       },
-      {
-        nodo: "marta",
-        etiqueta: "Marta",
-        titulo: "Si no lo coges, la llamada pasa a Marta.",
+      pregunta: {
+        titulo: "Pregunta",
+        texto: "Marta es una recepcionista de voz con inteligencia artificial. Pregunta lo que necesitas para devolver la llamada.",
+        datos: ["Nombre", "Teléfono", "Dirección", "Avería", "Urgencia"],
+      },
+      avisa: {
+        titulo: "Avisa",
         texto:
-          "Marta es una recepcionista de voz con inteligencia artificial. Pregunta nombre, teléfono, dirección, qué avería tiene y si corre prisa.",
+          "Te llega el parte por WhatsApp, clasificado como urgente, normal o presupuesto. Tú decides cuándo y cómo devuelves la llamada.",
       },
-      {
-        nodo: "parte",
-        etiqueta: "Parte",
-        titulo: "Te llega el parte por WhatsApp.",
-        texto:
-          "Clasificado como urgente, normal o presupuesto. Tú decides cuándo y cómo devuelves la llamada.",
-      },
-    ],
-    limites: {
-      titulo: "Lo que Marta no hace",
-      texto:
-        "Marta no repara averías, no da citas, no confirma disponibilidad y no da precios ni horas en tu nombre. Tampoco resuelve emergencias. Toma nota y te avisa. El resto lo decides tú.",
     },
   },
 
-  parte: {
-    id: "parte",
-    titulo: "Así te llega cada llamada.",
-    intro: "Un parte ordenado que lees de un vistazo entre aviso y aviso.",
-    notas: [
-      { titulo: "La prioridad arriba", texto: "Sabes qué va primero sin abrir nada más." },
-      { titulo: "Dirección y vivienda", texto: "Para llegar sin tener que volver a preguntar." },
-      { titulo: "Notas para el técnico", texto: "Equipo, horario en que está en casa y cómo entrar." },
-    ],
-    prioridades: {
-      titulo: "Tres prioridades",
-      lista: [
-        { clave: "urgente", nombre: "Urgente", texto: "Avería que no puede esperar: una fuga, sin agua, sin luz." },
-        { clave: "normal", nombre: "Normal", texto: "Avería o revisión sin prisa." },
-        { clave: "presupuesto", nombre: "Presupuesto", texto: "Pide precio o una obra nueva." },
-      ],
-    },
+  // Cita de un cliente. Si el texto está vacío, la sección no se muestra.
+  testimonio: {
+    texto: "",
+    nombre: "",
+    cargo: "",
+    empresa: "",
   },
 
-  oficios: {
-    id: "para-quien",
-    titulo: "Marta trabaja para instaladores de toda España.",
-    lista: [
-      { nombre: "Climatización", texto: "El aire no enfría o la máquina gotea." },
-      { nombre: "Fontanería", texto: "Una fuga o un calentador que no va." },
-      { nombre: "Electricidad", texto: "Salta el diferencial o se va la luz." },
-      { nombre: "Tratamiento de agua", texto: "El descalcificador no regenera." },
-    ],
-    real: "Marta ya atiende llamadas en una empresa de tratamiento de agua.",
-  },
-
-  precio: {
-    id: "precio",
-    titulo: "Un precio fijo al mes.",
-    cifra: "149",
-    unidad: "€/mes",
-    piloto: {
-      titulo: "Piloto",
-      texto: "99\u00A0€/mes los tres primeros meses. Solo para cinco instaladores.",
-    },
-    condiciones: "Las condiciones completas se confirman antes de empezar.",
-    cta: "Pedir una demo por WhatsApp",
+  limites: {
+    titulo: "Lo que Marta no hace",
+    texto:
+      "Marta no repara averías, no da citas, no confirma disponibilidad y no da precios ni horas en tu nombre. Tampoco resuelve emergencias. Toma nota y te avisa. El resto lo decides tú.",
   },
 
   ismael: {
@@ -175,6 +129,19 @@ export default {
       "Ismael construye el servicio y habla en persona con cada instalador antes de empezar.",
       "Si le escribes por WhatsApp, te contesta él.",
     ],
+  },
+
+  precio: {
+    id: "precio",
+    titulo: "Un precio fijo al mes.",
+    cifra: "149",
+    unidad: "€/mes",
+    piloto: {
+      titulo: "Piloto",
+      texto: "99 €/mes los tres primeros meses. Solo para cinco instaladores.",
+    },
+    condiciones: "Las condiciones completas se confirman antes de empezar.",
+    cta: "Pedir una demo por WhatsApp",
   },
 
   faq: {
@@ -203,7 +170,7 @@ export default {
       },
       {
         p: "¿Cuánto cuesta?",
-        r: "149\u00A0€/mes. Para el piloto, 99\u00A0€/mes los tres primeros meses, solo para cinco instaladores. Las condiciones completas se confirman antes de empezar.",
+        r: "149 €/mes. Para el piloto, 99 €/mes los tres primeros meses, solo para cinco instaladores. Las condiciones completas se confirman antes de empezar.",
       },
       {
         p: "¿Y la privacidad de los datos?",
@@ -213,12 +180,13 @@ export default {
   },
 
   final: {
-    titulo: "Pide una demo y oye cómo atiende Marta.",
+    titulo: "Cada llamada, atendida.",
     texto: "Un mensaje por WhatsApp a Ismael. Sin formularios.",
     cta: "Pedir una demo por WhatsApp",
   },
 
   pie: {
-    whatsapp: "WhatsApp +34\u00A0722\u00A0460\u00A0735",
+    whatsapp: "WhatsApp +34 722 460 735",
+    imagenIA: "Imagen generada con IA.",
   },
 };
