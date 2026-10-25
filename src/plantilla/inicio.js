@@ -1,29 +1,16 @@
 // Home y páginas de sector (misma plantilla; el sector cambia la línea bajo el hero, la foto,
 // los avisos de "Atiende", el parte de ejemplo y una pregunta extra).
 
-import { esc, conAcento, enlaceWhatsapp, ICONOS, buscarLogo, tarjetas, oscuro, precio, preguntas, cierre } from "./comun.js";
+import { esc, conAcento, enlaceWhatsapp, buscarLogo, carrusel, tarjetas, oscuro, precio, preguntas, cierre } from "./comun.js";
 
-function heroFoto(c, sector) {
-  const img = c.t.hero.imagen;
-  if (sector) {
-    const f = sector.foto;
-    return `
+// Columna derecha del hero: en la home, el carrusel de sectores; en cada sector, su foto
+function heroVisual(c, sector) {
+  if (!sector) return carrusel(c, { id: "carrusel-inicio", hero: true });
+  const f = sector.foto;
+  return `
         <picture class="hero__foto hero__foto--sector">
           <img src="${esc(f.src)}" width="${f.ancho}" height="${f.alto}" alt="${esc(f.alt)}" loading="eager" fetchpriority="high" decoding="async">
         </picture>`;
-  }
-  const f = c.t.hero.foto;
-  return `
-        <div class="hero__escenario">
-          <picture class="hero__foto hero__foto--home">
-            <img src="${esc(f.src)}" width="${f.ancho}" height="${f.alto}" alt="${esc(img.alt)}" loading="eager" fetchpriority="high" decoding="async">
-          </picture>
-          <ul class="flotantes" tabindex="0" aria-label="${esc(c.t.hero.tarjetasEtiqueta)}">
-            ${c.t.hero.tarjetas
-              .map((x) => `<li class="flotante"><span class="flotante__icono">${ICONOS[x.icono]}</span><span class="flotante__texto"><strong>${esc(x.titulo)}</strong><span>${esc(x.texto)}</span></span></li>`)
-              .join("")}
-          </ul>
-        </div>`;
 }
 
 // Cinta de sectores: píldoras en movimiento continuo; la lista va duplicada para que el bucle no se corte
@@ -75,7 +62,7 @@ export function inicio(c, sector = null) {
           <a class="boton boton--contorno" href="#${esc(cf.id)}">${esc(h.secundario)}</a>
         </div>
       </div>
-      <div class="hero__visual${sector ? "" : " hero__visual--home"}">${heroFoto(c, sector)}</div>
+      <div class="hero__visual${sector ? "" : " hero__visual--home"}">${heroVisual(c, sector)}</div>
       ${sector ? "" : `<div class="hero__cinta">${cinta(c)}</div>`}
     </div>
   </section>

@@ -1834,81 +1834,28 @@ html:not(.js) .carrusel__controles {
 }
 
 
-/* ---------- Home: foto 4:3 con tarjetas flotantes ---------- */
+/* ---------- Home: carrusel de sectores en la columna derecha del hero ----------
+   Tres tarjetas a la vista; en escritorio caben en la columna derecha. */
 
-.hero__escenario {
-  position: relative;
+.carrusel--hero {
+  margin-top: 0;
 }
-.hero__foto--home img {
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
-  object-position: center 30%;
+@media (min-width: 48em) {
+  .carrusel--hero {
+    --ancho: 13.75rem; /* 220 px */
+  }
 }
-.flotantes {
-  display: flex;
-  gap: 0.75rem;
-  margin-top: 1rem;
-  padding-bottom: 0.5rem;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  overscroll-behavior-x: contain;
-}
-.flotante {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  flex: none;
-  padding: 0.75rem 1.125rem 0.75rem 0.75rem;
-  border: 1px solid var(--linea);
-  border-radius: 12px;
-  background: var(--blanco);
-  box-shadow: var(--sombra-flotante);
-  scroll-snap-align: start;
-}
-.flotante__icono {
-  display: grid;
-  place-items: center;
-  width: 2.25rem;
-  height: 2.25rem;
-  border-radius: 8px;
-  background: var(--acento-suave);
-}
-.flotante__texto {
-  display: grid;
-  line-height: 1.3;
-}
-.flotante__texto strong {
-  font-size: 0.9375rem;
-  font-weight: 600;
-  color: var(--tinta);
-}
-.flotante__texto span {
-  font-size: 0.8125rem;
-  color: var(--tenue);
+.js .carrusel--hero .carrusel__item[data-pos="-2"],
+.js .carrusel--hero .carrusel__item[data-pos="2"] {
+  visibility: hidden;
+  opacity: 0;
 }
 @media (min-width: 64em) {
-  .hero__visual--home {
-    padding-left: 3rem;
+  .carrusel--hero {
+    --ancho: 12.5rem; /* 200 px: las tres caben en la columna */
   }
-  .flotantes {
-    display: block;
-    margin: 0;
-    padding: 0;
-    overflow: visible;
-  }
-  .flotante {
-    position: absolute;
-    left: -3.5rem;
-  }
-  .flotante:nth-child(1) {
-    top: 16%;
-  }
-  .flotante:nth-child(2) {
-    top: 42%;
-    left: -5rem;
-  }
-  .flotante:nth-child(3) {
-    top: 68%;
+  .js .carrusel--hero .carrusel__escena {
+    margin-inline: -1rem;
   }
 }
 
@@ -1994,14 +1941,13 @@ html:not(.js) .carrusel__controles {
   align-items: center;
 }
 
-/* La cinta y las tarjetas deslizables no deben ensanchar la columna del hero en móvil */
+/* La cinta y el carrusel no deben ensanchar la columna del hero en móvil */
 @media (max-width: 63.99em) {
   .hero__marco {
     grid-template-columns: minmax(0, 1fr);
   }
 }
 .hero__texto,
-.hero__visual,
-.hero__escenario {
+.hero__visual {
   min-width: 0;
 }

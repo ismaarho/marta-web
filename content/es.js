@@ -59,15 +59,6 @@ export default {
     linea: "No es dejadez. Es el oficio.",
     cta: "Pedir una demo por WhatsApp",
     secundario: "Ver cómo funciona",
-    // Tarjetas flotantes sobre la foto del hero (en móvil, fila deslizable bajo la foto)
-    tarjetasEtiqueta: "Lo que hace Marta",
-    tarjetas: [
-      { icono: "atiende", titulo: "Atendida en 9\u00A0s", texto: "Si no lo coges" },
-      { icono: "avisa", titulo: "Parte por WhatsApp", texto: "Urgente, normal o presupuesto" },
-      { icono: "check", titulo: "Ya en Aquaproc", texto: "Tratamiento de agua" },
-    ],
-    // Foto del hero de la home, recortada a 4:3
-    foto: { src: "/img/hero-movil.jpg", ancho: 900, alto: 1125 },
     imagen: {
       escritorio: { src: "/img/hero.jpg", ancho: 1600, alto: 900 },
       movil: { src: "/img/hero-movil.jpg", ancho: 900, alto: 1125 },

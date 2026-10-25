@@ -137,11 +137,11 @@ export function pie(c) {
 // ---------- Carrusel de sectores ----------
 // Sin JS se ve como una rejilla de tarjetas; con JS, central en color y laterales giradas.
 
-export function carrusel(c, { pequeno = false, id = "carrusel" } = {}) {
+export function carrusel(c, { pequeno = false, hero = false, id = "carrusel" } = {}) {
   const { t, sectores } = c;
   const k = t.carrusel;
   return `
-  <div class="carrusel${pequeno ? " carrusel--pequeno" : ""}" id="${id}" role="region" aria-roledescription="carrusel" aria-label="${esc(k.etiqueta)}">
+  <div class="carrusel${pequeno ? " carrusel--pequeno" : ""}${hero ? " carrusel--hero" : ""}" id="${id}" role="region" aria-roledescription="carrusel" aria-label="${esc(k.etiqueta)}">
     <div class="carrusel__escena">
       <span class="carrusel__corchetes" aria-hidden="true"></span>
       <ul class="carrusel__pista">
@@ -150,7 +150,7 @@ export function carrusel(c, { pequeno = false, id = "carrusel" } = {}) {
             (s, i) => `
         <li class="carrusel__item" data-indice="${i}">
           <a class="carrusel__tarjeta" href="/sectores/${esc(s.slug)}/">
-            <img src="${esc(s.foto.mini)}" srcset="${esc(s.foto.mini)} 360w, ${esc(s.foto.src)} 900w" sizes="${pequeno ? "180px" : "(min-width: 48em) 300px, 220px"}"
+            <img src="${esc(s.foto.mini)}" srcset="${esc(s.foto.mini)} 360w, ${esc(s.foto.src)} 900w" sizes="${pequeno ? "180px" : hero ? "220px" : "(min-width: 48em) 300px, 220px"}"
               width="360" height="450" alt="" loading="${i < 3 || i > sectores.length - 3 ? "eager" : "lazy"}" decoding="async">
             <span class="carrusel__nombre">${esc(s.nombre)}</span>
           </a>

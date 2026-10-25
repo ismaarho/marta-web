@@ -47,7 +47,7 @@ for (const ruta of PAGINAS) {
       // Elementos que se salen de la ventana, salvo los recortados a propósito (carrusel)
       const desbordan = [...document.querySelectorAll("body *")]
         .filter((el) => {
-          if (el.closest(".sr, .saltar, .carrusel__escena, .cinta, .flotantes")) return false;
+          if (el.closest(".sr, .saltar, .carrusel__escena, .cinta")) return false;
           const r = el.getBoundingClientRect();
           return r.width > 0 && (r.right > ancho + 1 || r.left < -1);
         })
@@ -95,7 +95,29 @@ for (const ruta of PAGINAS) {
       const cerrado = !(await pagina.isVisible("#menu-sectores a >> nth=0"));
       visible && cerrado ? bien("Desplegable de escritorio: abre con Enter y cierra con Escape") : mal(`Desplegable: visible=${visible} cerrado=${cerrado}`);
     }
-    if (ruta === "/sectores/") {
+    if (ruta === "/") {
+      // Carrusel del hero: tres tarjetas a la vista, en la columna derecha (escritorio) o bajo los botones (móvil)
+      const vistas = await pagina.$$eval(".carrusel--hero .carrusel__item", (els) => els.filter((e) => getComputedStyle(e).visibility === "visible").length);
+      vistas === 3 ? bien(`${p}: carrusel del hero con 3 tarjetas a la vista`) : mal(`${p}: carrusel del hero con ${vistas} tarjetas a la vista`);
+      const sitio = await pagina.evaluate(() => {
+        const r = document.querySelector(".hero .carrusel").getBoundingClientRect();
+        const t = document.querySelector(".hero__acciones").getBoundingClientRect();
+        return innerWidth >= 1024 ? r.left > t.right : r.top > t.bottom;
+      });
+      sitio ? bien(`${p}: carrusel del hero en su sitio`) : mal(`${p}: carrusel del hero fuera de sitio`);
+      const fotoTecnico = await pagina.$(".hero img[src*='hero']");
+      !fotoTecnico ? bien(`${p}: sin foto del técnico en el hero`) : mal(`${p}: sigue la foto del técnico en el hero`);
+      // Los botones mueven el carrusel
+      const i0 = await pagina.getAttribute('.carrusel--hero .carrusel__item[data-pos="0"]', "data-indice");
+      await pagina.click('.carrusel--hero [data-accion="siguiente"]');
+      const i1 = await pagina.getAttribute('.carrusel--hero .carrusel__item[data-pos="0"]', "data-indice");
+      await pagina.click('.carrusel--hero [data-accion="anterior"]');
+      const i2 = await pagina.getAttribute('.carrusel--hero .carrusel__item[data-pos="0"]', "data-indice");
+      i1 !== i0 && i2 === i0 ? bien(`${p}: anterior/siguiente funcionan`) : mal(`${p}: anterior/siguiente fallan (${i0} → ${i1} → ${i2})`);
+      // Con el foco dentro el carrusel se para a propósito: se quita antes de comprobar que avanza solo
+      await pagina.evaluate(() => document.activeElement.blur());
+    }
+    if (ruta === "/" || ruta === "/sectores/") {
       // El carrusel avanza solo (sin movimiento reducido)
       const antes = await pagina.getAttribute('.carrusel__item[data-pos="0"]', "data-indice");
       await pagina.mouse.move(1, 1);
