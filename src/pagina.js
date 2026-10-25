@@ -9,10 +9,6 @@ function enlaceWhatsapp(t, url, texto, clase = "boton") {
   return `<a class="${clase}" href="${esc(url)}" target="_blank" rel="noopener">${esc(texto)}<span class="sr"> ${esc(t.abreWhatsapp)}</span></a>`;
 }
 
-const icono = {
-  telefono: `<svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M10.2 4.5c.9-.4 1.9 0 2.3.9l1.8 4.2c.3.8.1 1.7-.6 2.2l-2.1 1.6c1.3 2.8 3.5 5 6.3 6.3l1.6-2.1c.5-.7 1.4-.9 2.2-.6l4.2 1.8c.9.4 1.3 1.4.9 2.3l-1.1 2.8c-.5 1.2-1.7 2-3 1.9C13.6 25.2 6.8 18.4 6.2 9.3c-.1-1.3.7-2.5 1.9-3z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg>`,
-};
-
 // El parte: objeto central del diseño. Variante "mini" para el visual del hero.
 function parte(t, { mini = false } = {}) {
   const e = t.ejemplo;
@@ -30,30 +26,6 @@ function parte(t, { mini = false } = {}) {
     ${mini ? "" : `<p class="parte__pie">${esc(e.pie)}</p>`}
   </article>`;
 }
-
-// Nodos del diagrama propio (llamada → Marta → parte). Cada paso de "Cómo funciona" lleva el suyo.
-const nodos = {
-  llamada: `<svg viewBox="0 0 72 72" aria-hidden="true" focusable="false">
-      <circle cx="36" cy="36" r="33" class="d-nodo"/>
-      <g transform="translate(12 12) scale(1.5)" class="d-icono">${icono.telefono.replace(/<\/?svg[^>]*>/g, "")}</g>
-    </svg>`,
-  marta: `<svg viewBox="0 0 72 72" aria-hidden="true" focusable="false">
-      <circle cx="36" cy="36" r="33" class="d-nodo d-nodo--tinta"/>
-      <g class="d-onda">${[-12, -6, 0, 6, 12]
-        .map((dx, i) => {
-          const h = [8, 16, 24, 16, 8][i];
-          return `<line x1="${36 + dx}" y1="${36 - h / 2}" x2="${36 + dx}" y2="${36 + h / 2}"/>`;
-        })
-        .join("")}</g>
-    </svg>`,
-  parte: `<svg viewBox="0 0 72 72" aria-hidden="true" focusable="false">
-      <rect x="14" y="5" width="44" height="62" rx="4" class="d-papel"/>
-      <path d="M14 9a4 4 0 0 1 4-4h36a4 4 0 0 1 4 4v9H14z" class="d-naranja"/>
-      <line x1="22" y1="32" x2="50" y2="32" class="d-renglon"/>
-      <line x1="22" y1="43" x2="46" y2="43" class="d-renglon"/>
-      <line x1="22" y1="54" x2="40" y2="54" class="d-renglon"/>
-    </svg>`,
-};
 
 export function cabeza(t, sitio = "") {
   const base = sitio.replace(/\/$/, "");
@@ -115,12 +87,10 @@ export function pagina(t, WHATSAPP) {
 
       <div class="visual" role="img" aria-label="${esc(v.resumen)}">
         <div class="v-paso v-llamada" aria-hidden="true">
-          <span class="v-icono">${icono.telefono}</span>
-          <span><b>${esc(v.llamada)}</b><span class="v-estado">${esc(v.sinRespuesta)}</span></span>
+          <b>${esc(v.llamada)}</b><span class="v-estado">${esc(v.sinRespuesta)}</span>
         </div>
         <div class="v-tramo v-tramo--1" aria-hidden="true"><span>${esc(v.desvio)}</span></div>
         <div class="v-paso v-marta" aria-hidden="true">
-          <span class="v-onda"><i></i><i></i><i></i><i></i><i></i></span>
           <b>${esc(v.marta)}</b>
         </div>
         <div class="v-tramo v-tramo--2" aria-hidden="true"><span>${esc(v.llega)}</span></div>
@@ -147,7 +117,7 @@ export function pagina(t, WHATSAPP) {
         ${cf.pasos
           .map(
             (s, i) => `<li class="paso paso--${s.nodo}">
-          <div class="paso__nodo">${nodos[s.nodo]}</div>
+          <div class="paso__nodo" aria-hidden="true">${esc(s.etiqueta)}</div>
           <div class="paso__texto">
             <h3>${esc(s.titulo)}</h3>
             <p>${esc(s.texto)}</p>
@@ -209,7 +179,7 @@ export function pagina(t, WHATSAPP) {
           <p>${esc(t.precio.piloto.texto)}</p>
         </div>
         <p class="precio__condiciones">${esc(t.precio.condiciones)}</p>
-        ${enlaceWhatsapp(t, WHATSAPP, t.precio.cta, "boton boton--tinta boton--grande")}
+        ${enlaceWhatsapp(t, WHATSAPP, t.precio.cta, "boton boton--grande")}
       </div>
     </div>
   </section>

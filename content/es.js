@@ -93,22 +93,25 @@ export default {
   comoFunciona: {
     id: "como-funciona",
     titulo: "Tu número no cambia. Solo cambia quién contesta cuando tú no puedes.",
-    // Cada paso es un nodo del diagrama: llamada → Marta → parte
+    // Cada paso es un nodo del diagrama (llamada → Marta → parte); etiqueta = texto del nodo
     espera: "Unos segundos sin respuesta",
     pasos: [
       {
         nodo: "llamada",
+        etiqueta: "Llamada",
         titulo: "Tu cliente llama a tu número de siempre.",
         texto: "No tiene que apuntar otro número. Si lo coges tú, todo sigue igual.",
       },
       {
         nodo: "marta",
+        etiqueta: "Marta",
         titulo: "Si no lo coges, la llamada pasa a Marta.",
         texto:
           "Marta es una recepcionista de voz con inteligencia artificial. Pregunta nombre, teléfono, dirección, qué avería tiene y si corre prisa.",
       },
       {
         nodo: "parte",
+        etiqueta: "Parte",
         titulo: "Te llega el parte por WhatsApp.",
         texto:
           "Clasificado como urgente, normal o presupuesto. Tú decides cuándo y cómo devuelves la llamada.",
