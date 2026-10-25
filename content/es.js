@@ -1,6 +1,7 @@
-// Todos los textos de la web en castellano.
-// Para añadir otro idioma: copia este archivo (p. ej. content/ca.js) con la misma estructura.
-// Los componentes de src/pagina.js no cambian.
+// Todos los textos generales de la web en castellano.
+// Los de cada sector están en content/sectores/<slug>.js.
+// Para añadir otro idioma: copia este archivo y la carpeta de sectores con la misma estructura.
+// Las plantillas de src/plantilla/ no cambian.
 
 // Único enlace de contacto. Todos los botones usan exactamente esta URL.
 export const WHATSAPP =
@@ -13,24 +14,35 @@ export default {
   meta: {
     titulo: "Marta: atiende las llamadas que no puedes coger",
     descripcion:
-      "Si no coges el teléfono, la llamada pasa a Marta. Apunta nombre, teléfono, dirección, avería y urgencia, y te manda el parte por WhatsApp. Para instaladores de toda España.",
+      "Si no coges el teléfono, la llamada pasa a Marta. Apunta nombre, teléfono, dirección, motivo del aviso y urgencia, y te manda el parte por WhatsApp. Para empresas de servicios de toda España.",
     ogAlt:
-      "Tú trabaja. Marta atiende el teléfono. Un instalador monta un aire acondicionado mientras su móvil suena sobre la mesa.",
+      "Tú trabaja. Marta atiende el teléfono. Un técnico monta un aire acondicionado mientras su móvil suena sobre la mesa.",
   },
 
   saltar: "Saltar al contenido",
   marca: "Marta",
   inicio: "Marta, ir al inicio",
+  lema: "Tú trabaja. Marta atiende el teléfono.",
 
   nav: {
     etiqueta: "Secciones",
     abrir: "Abrir menú",
     cerrar: "Cerrar menú",
+    comoFunciona: {
+      texto: "Cómo funciona",
+      enlaces: [
+        { href: "/como-funciona/", texto: "Visión general" },
+        { href: "/como-funciona/#desvio", texto: "El desvío" },
+        { href: "/como-funciona/#conversacion", texto: "La conversación" },
+        { href: "/como-funciona/#clasificacion", texto: "La clasificación" },
+        { href: "/como-funciona/#parte", texto: "El parte por WhatsApp" },
+      ],
+    },
+    sectores: { texto: "Sectores", todos: "Todos los sectores" },
     enlaces: [
-      { href: "#como-funciona", texto: "Cómo funciona" },
-      { href: "#quien", texto: "Quién está detrás" },
-      { href: "#precio", texto: "Precio" },
-      { href: "#preguntas", texto: "Preguntas" },
+      { href: "/clientes/", texto: "Clientes" },
+      { href: "/#precio", texto: "Precio" },
+      { href: "/#preguntas", texto: "Preguntas" },
     ],
     cta: "Pedir demo",
   },
@@ -44,36 +56,40 @@ export default {
     tituloAcento: "Marta atiende",
     flujo:
       "Si no lo coges en unos segundos, la llamada pasa a Marta. Ella apunta los datos del cliente y te manda el parte por WhatsApp.",
+    linea: "No es dejadez. Es el oficio.",
     cta: "Pedir una demo por WhatsApp",
     secundario: "Ver cómo funciona",
     imagen: {
       escritorio: { src: "/img/hero.jpg", ancho: 1600, alto: 900 },
       movil: { src: "/img/hero-movil.jpg", ancho: 900, alto: 1125 },
-      alt: "Un instalador monta un aire acondicionado subido a una escalera mientras su móvil suena sobre la mesa.",
+      alt: "Un técnico monta un aire acondicionado subido a una escalera mientras su móvil suena sobre la mesa.",
     },
   },
 
-  oficios: {
-    etiqueta: "Oficios",
-    lista: ["Climatización", "Fontanería", "Electricidad", "Tratamiento de agua"],
+  carrusel: {
+    etiqueta: "Carrusel de sectores",
+    anterior: "Sector anterior",
+    siguiente: "Sector siguiente",
+    pausar: "Pausar el carrusel",
+    reanudar: "Reanudar el carrusel",
   },
 
-  primerInstalador: {
-    titulo: "Primer instalador con Marta",
+  primeraEmpresa: {
+    titulo: "Primera empresa con Marta",
     nombre: "Aquaproc",
     // Ruta del logo cuando esté disponible (p. ej. "/img/aquaproc.svg"); vacío = nombre en texto
     logo: "",
     sector: "Tratamiento de agua",
   },
 
-  // Datos del parte de ejemplo: ficticios a propósito
+  // Datos del parte de ejemplo: ficticios a propósito. Cada sector cambia el motivo y la prioridad.
   ejemplo: {
     sello: "Ejemplo",
     remitente: "Marta",
     cabecera: "Nueva llamada atendida por Marta",
     prioridad: "Urgente",
+    motivo: "Fuga de agua debajo de la caldera",
     campos: [
-      { etiqueta: "Motivo", valor: "Fuga de agua debajo de la caldera" },
       { etiqueta: "Cliente", valor: "Laura Martín" },
       { etiqueta: "Teléfono", valor: "600 000 000" },
       { etiqueta: "Dirección", valor: "Calle Inexistente, 12, 2.º B" },
@@ -82,8 +98,8 @@ export default {
 
   comoFunciona: {
     id: "como-funciona",
-    titulo: "Tu número no cambia. Solo cambia quién contesta cuando tú no puedes.",
-    tituloAcento: "quién contesta",
+    titulo: "Así funciona cada llamada.",
+    subtitulo: "Tu número no cambia. Solo cambia quién contesta cuando tú no puedes.",
     tarjetas: {
       atiende: {
         titulo: "Atiende",
@@ -98,7 +114,7 @@ export default {
       pregunta: {
         titulo: "Pregunta",
         texto: "Marta es una recepcionista de voz con inteligencia artificial. Pregunta lo que necesitas para devolver la llamada.",
-        datos: ["Nombre", "Teléfono", "Dirección", "Avería", "Urgencia"],
+        datos: ["Nombre", "Teléfono", "Dirección", "Aviso", "Urgencia"],
       },
       avisa: {
         titulo: "Avisa",
@@ -119,14 +135,14 @@ export default {
   limites: {
     titulo: "Lo que Marta no hace",
     texto:
-      "Marta no repara averías, no da citas, no confirma disponibilidad y no da precios ni horas en tu nombre. Tampoco resuelve emergencias. Toma nota y te avisa. El resto lo decides tú.",
+      "Marta no hace los trabajos, no da citas, no confirma disponibilidad y no da precios ni horas en tu nombre. Tampoco resuelve emergencias. Toma nota y te avisa. El resto lo decides tú.",
   },
 
   ismael: {
     id: "quien",
     titulo: "Detrás de Marta está Ismael.",
     texto: [
-      "Ismael construye el servicio y habla en persona con cada instalador antes de empezar.",
+      "Ismael construye el servicio y habla en persona con cada empresa antes de empezar.",
       "Si le escribes por WhatsApp, te contesta él.",
     ],
   },
@@ -138,7 +154,7 @@ export default {
     unidad: "€/mes",
     piloto: {
       titulo: "Piloto",
-      texto: "99 €/mes los tres primeros meses. Solo para cinco instaladores.",
+      texto: "99 €/mes los tres primeros meses. Solo para cinco empresas.",
     },
     condiciones: "Las condiciones completas se confirman antes de empezar.",
     cta: "Pedir una demo por WhatsApp",
@@ -158,7 +174,7 @@ export default {
       },
       {
         p: "¿Qué datos recoge Marta?",
-        r: "El nombre del cliente, su teléfono, la dirección, la avería y si es urgente.",
+        r: "El nombre del cliente, su teléfono, la dirección, el motivo del aviso y si es urgente.",
       },
       {
         p: "¿Cómo me entero de cada llamada?",
@@ -170,7 +186,7 @@ export default {
       },
       {
         p: "¿Cuánto cuesta?",
-        r: "149 €/mes. Para el piloto, 99 €/mes los tres primeros meses, solo para cinco instaladores. Las condiciones completas se confirman antes de empezar.",
+        r: "149 €/mes. Para el piloto, 99 €/mes los tres primeros meses, solo para cinco empresas. Las condiciones completas se confirman antes de empezar.",
       },
       {
         p: "¿Y la privacidad de los datos?",
@@ -186,7 +202,104 @@ export default {
   },
 
   pie: {
+    producto: "Producto",
+    sectores: "Sectores",
+    empresa: "Empresa",
     whatsapp: "WhatsApp +34 722 460 735",
     imagenIA: "Imagen generada con IA.",
+  },
+
+  // ---------- Páginas ----------
+
+  paginaComoFunciona: {
+    meta: {
+      titulo: "Cómo funciona Marta: desvío, conversación, clasificación y parte",
+      descripcion:
+        "Cuando no coges, la llamada pasa a Marta. Pregunta una cosa cada vez, clasifica el aviso y te manda el parte por WhatsApp. Para empresas de servicios de toda España.",
+      ogTitulo: "Así funciona Marta.",
+      ogAcento: "Marta",
+    },
+    titulo: "Así funciona Marta.",
+    tituloAcento: "Marta",
+    subtitulo:
+      "Si no coges el teléfono, la llamada pasa a Marta. Ella pregunta lo necesario, clasifica el aviso y te manda el parte por WhatsApp.",
+    secundario: "Ver los sectores",
+    bloques: {
+      desvio: {
+        id: "desvio",
+        etiqueta: "El desvío",
+        titulo: "Tu número de siempre, con desvío cuando no contestas.",
+        texto:
+          "Según tu línea, el desvío se activa desde el propio móvil o hay que pedírselo a tu operadora. Si coges tú, todo sigue igual.",
+        filas: [
+          { a: "Si contestas", b: "Hablas tú" },
+          { a: "Si no contestas", b: "Pasa a Marta" },
+          { a: "Cómo se activa", b: "Desde el móvil o con la operadora" },
+        ],
+      },
+      conversacion: {
+        id: "conversacion",
+        etiqueta: "La conversación",
+        titulo: "Una pregunta cada vez.",
+        texto:
+          "Marta pregunta una cosa por turno: nombre, teléfono, dirección, motivo del aviso y si corre prisa. No da precios ni citas.",
+        turnos: [
+          { quien: "Marta", texto: "Buenos días, le atiende Marta. ¿Me dice su nombre?" },
+          { quien: "Cliente", texto: "Laura Martín." },
+          { quien: "Marta", texto: "Gracias, Laura. ¿A qué teléfono le podemos llamar?" },
+          { quien: "Cliente", texto: "Al 600 000 000." },
+          { quien: "Marta", texto: "¿Y cuál es la dirección?" },
+        ],
+      },
+      clasificacion: {
+        id: "clasificacion",
+        etiqueta: "La clasificación",
+        titulo: "Cada aviso, con su prioridad.",
+        texto: "Así sabes qué va primero sin abrir nada más.",
+        prioridades: [
+          { clave: "urgente", nombre: "Urgente", texto: "No puede esperar." },
+          { clave: "normal", nombre: "Normal", texto: "Sin prisa." },
+          { clave: "presupuesto", nombre: "Presupuesto", texto: "Pide precio o un trabajo nuevo." },
+        ],
+      },
+      parte: {
+        id: "parte",
+        etiqueta: "El parte por WhatsApp",
+        titulo: "Te llega el parte, listo para devolver la llamada.",
+        texto:
+          "Con el nombre, el teléfono, la dirección, el motivo y la prioridad. Tú decides cuándo y cómo respondes.",
+      },
+    },
+  },
+
+  paginaSectores: {
+    meta: {
+      titulo: "Sectores: Marta para empresas de servicios de toda España",
+      descripcion:
+        "Climatización, fontanería, electricidad, tejados, cerrajería y más. Marta atiende las llamadas que no puedes coger y te manda el parte por WhatsApp.",
+      ogTitulo: "Sectores",
+    },
+    titulo: "Sectores",
+    subtitulo: "Marta atiende llamadas para empresas de servicios de toda España. Elige tu sector para ver cómo te llegan los avisos.",
+    rejillaTitulo: "Todos los sectores",
+  },
+
+  paginaSector: {
+    otros: "Otros sectores",
+  },
+
+  paginaClientes: {
+    meta: {
+      titulo: "Clientes: empresas que ya usan Marta",
+      descripcion: "Aquaproc, empresa de tratamiento de agua, es la primera empresa con Marta.",
+      ogTitulo: "Clientes",
+    },
+    titulo: "Clientes",
+    subtitulo: "La primera empresa que ya usa Marta.",
+    // Si no hay testimonio, se muestra esta frase en su lugar
+    sinCita: "Marta atiende las llamadas de Aquaproc desde octubre de 2026.",
+    queHaceTitulo: "Qué hace Marta ahí",
+    queHace:
+      "Cuando nadie del equipo puede coger el teléfono, Marta atiende la llamada, pregunta lo necesario y envía el parte por WhatsApp.",
   },
 };
