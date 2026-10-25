@@ -31,7 +31,8 @@ export const ICONOS = {
 };
 
 const marca = (t) =>
-  `<span class="marca__chapa" aria-hidden="true"></span><span translate="no">${esc(t.marca)}</span>`;
+  // Logo: símbolo B (burbuja de aviso, public/logo/simbolo-b.svg) + «Marta»
+  `<svg class="marca__simbolo" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 21V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v7a4 4 0 0 1-4 4H8z"/><path d="M8 10.5h5" stroke-linecap="round"/></g><circle class="marca__punto" cx="16.5" cy="10.5" r="1.5" fill="currentColor"/></svg><span translate="no">${esc(t.marca)}</span>`;
 
 // ---------- <head> ----------
 

@@ -25,7 +25,7 @@ body { width: 1200px; height: 630px; overflow: hidden; background: #fff; color: 
 h1 { font: 400 64px/1.05 D; text-transform: uppercase; letter-spacing: -0.02em; }
 .acento { color: #3a6bb5; }
 .marca { display: flex; align-items: center; gap: 12px; flex: none; font: 700 36px/1 T; }
-.chapa { width: 26px; height: 26px; border-radius: 3px; background: #3a6bb5; }
+.simbolo { width: 38px; height: 38px; color: #3a6bb5; }
 .franja { display: flex; align-items: center; justify-content: space-between; gap: 32px; height: 168px; padding: 0 56px; border-top: 4px solid #3a6bb5; }
 .foto { height: 462px; background-position: center 0%; background-size: cover; }
 .mosaico { display: flex; gap: 8px; height: 462px; padding: 0; background: #f1ece3; }
@@ -38,11 +38,11 @@ h1 { font: 400 64px/1.05 D; text-transform: uppercase; letter-spacing: -0.02em; 
 
 const plantillas = {
   foto: async (x) => `<div class="foto" style="background-image:url(data:image/jpeg;base64,${await b64(x.foto)})"></div>
-    <div class="franja"><h1>${conAcento(x.titulo, x.acento)}</h1><div class="marca"><span class="chapa"></span>${esc(t.marca)}</div></div>`,
+    <div class="franja"><h1>${conAcento(x.titulo, x.acento)}</h1><div class="marca"><svg class="simbolo" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 21V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v7a4 4 0 0 1-4 4H8z"/><path d="M8 10.5h5" stroke-linecap="round"/></g><circle cx="16.5" cy="10.5" r="1.5" fill="currentColor"/></svg>${esc(t.marca)}</div></div>`,
   mosaico: async (x) => `<div class="mosaico">${(await Promise.all(x.fotos.map(b64))).map((f) => `<div style="background-image:url(data:image/jpeg;base64,${f})"></div>`).join("")}</div>
-    <div class="franja"><h1>${conAcento(x.titulo, x.acento)}</h1><div class="marca"><span class="chapa"></span>${esc(t.marca)}</div></div>`,
+    <div class="franja"><h1>${conAcento(x.titulo, x.acento)}</h1><div class="marca"><svg class="simbolo" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 21V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v7a4 4 0 0 1-4 4H8z"/><path d="M8 10.5h5" stroke-linecap="round"/></g><circle cx="16.5" cy="10.5" r="1.5" fill="currentColor"/></svg>${esc(t.marca)}</div></div>`,
   sector: async (x) => `<div class="sector"><div class="foto" style="height:630px;background-position:center 30%;background-image:url(data:image/jpeg;base64,${await b64(x.foto)})"></div>
-    <div class="lado"><div class="marca"><span class="chapa"></span>${esc(t.marca)}</div><h1>${conAcento(x.titulo, x.acento)}</h1><p class="linea">${esc(x.linea)}</p></div></div>`,
+    <div class="lado"><div class="marca"><svg class="simbolo" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 21V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v7a4 4 0 0 1-4 4H8z"/><path d="M8 10.5h5" stroke-linecap="round"/></g><circle cx="16.5" cy="10.5" r="1.5" fill="currentColor"/></svg>${esc(t.marca)}</div><h1>${conAcento(x.titulo, x.acento)}</h1><p class="linea">${esc(x.linea)}</p></div></div>`,
 };
 
 const navegador = await chromium.launch(process.env.CHROMIUM ? { executablePath: process.env.CHROMIUM } : {});
