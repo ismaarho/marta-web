@@ -85,8 +85,6 @@ export default {
       "Estás debajo de un fregadero con las manos mojadas.",
       "Estás en lo alto de la escalera colgando un split.",
       "Vas conduciendo de un aviso al siguiente.",
-      "Tienes el cuadro eléctrico abierto y no puedes soltarlo.",
-      "Tienes delante a un cliente explicándote su avería.",
     ],
     cierre:
       "Y quien llama con una avería no suele esperar. Si nadie contesta, prueba con el siguiente.",
@@ -95,25 +93,22 @@ export default {
   comoFunciona: {
     id: "como-funciona",
     titulo: "Tu número no cambia. Solo cambia quién contesta cuando tú no puedes.",
-    diagrama: {
-      resumen:
-        "Diagrama: la llamada entra en tu número; si pasan unos segundos sin respuesta, se desvía a Marta; Marta te envía el parte por WhatsApp.",
-      llamada: "Tu número",
-      espera: "unos segundos sin respuesta",
-      marta: "Marta",
-      parte: "Parte por WhatsApp",
-    },
+    // Cada paso es un nodo del diagrama: llamada → Marta → parte
+    espera: "Unos segundos sin respuesta",
     pasos: [
       {
+        nodo: "llamada",
         titulo: "Tu cliente llama a tu número de siempre.",
         texto: "No tiene que apuntar otro número. Si lo coges tú, todo sigue igual.",
       },
       {
+        nodo: "marta",
         titulo: "Si no lo coges, la llamada pasa a Marta.",
         texto:
           "Marta es una recepcionista de voz con inteligencia artificial. Pregunta nombre, teléfono, dirección, qué avería tiene y si corre prisa.",
       },
       {
+        nodo: "parte",
         titulo: "Te llega el parte por WhatsApp.",
         texto:
           "Clasificado como urgente, normal o presupuesto. Tú decides cuándo y cómo devuelves la llamada.",
@@ -149,22 +144,10 @@ export default {
     id: "para-quien",
     titulo: "Marta trabaja para instaladores de toda España.",
     lista: [
-      {
-        nombre: "Climatización",
-        texto: "El aire no enfría, la bomba de calor hace ruido, quieren presupuesto de un split.",
-      },
-      {
-        nombre: "Fontanería",
-        texto: "Una fuga, un calentador que no enciende, un desagüe atascado.",
-      },
-      {
-        nombre: "Electricidad",
-        texto: "Salta el diferencial, se ha ido la luz en media casa, necesitan un boletín.",
-      },
-      {
-        nombre: "Tratamiento de agua",
-        texto: "Un descalcificador que no regenera, una ósmosis que pierde agua, el cambio de filtros.",
-      },
+      { nombre: "Climatización", texto: "El aire no enfría o la máquina gotea." },
+      { nombre: "Fontanería", texto: "Una fuga o un calentador que no va." },
+      { nombre: "Electricidad", texto: "Salta el diferencial o se va la luz." },
+      { nombre: "Tratamiento de agua", texto: "El descalcificador no regenera." },
     ],
     real: "Marta ya atiende llamadas en una empresa de tratamiento de agua.",
   },

@@ -909,29 +909,6 @@ main:focus {
 .como h2 {
   max-width: 22ch;
 }
-.diagrama {
-  margin-top: var(--e-7);
-}
-.diagrama svg {
-  display: block;
-  width: 100%;
-  height: auto;
-  overflow: visible;
-}
-.diagrama__h {
-  display: none !important;
-}
-.diagrama__v {
-  max-width: 21.25rem;
-}
-@media (min-width: 48em) {
-  .diagrama__h {
-    display: block !important;
-  }
-  .diagrama__v {
-    display: none !important;
-  }
-}
 .d-nodo {
   fill: var(--papel);
   stroke: var(--tinta);
@@ -982,54 +959,95 @@ main:focus {
   stroke-linecap: round;
   opacity: 0.55;
 }
-.d-etiqueta {
-  font-family: var(--display);
-  font-weight: 700;
-  font-size: 22px;
-  fill: var(--tinta);
-}
-.d-nota {
-  font-family: var(--texto);
-  font-size: 18px;
-  fill: var(--tinta-2);
-}
-.diagrama__v .d-etiqueta {
-  font-size: 21px;
-}
-.diagrama__v .d-nota {
-  font-size: 17px;
-}
-
+/* Cada paso lleva su nodo; los conectores dibujan el diagrama.
+   Móvil: en vertical por la columna de nodos. Escritorio: en horizontal entre nodos. */
 .pasos {
+  --nodo: 3.5rem;
+  --hueco: var(--e-6);
   display: grid;
-  gap: var(--e-6);
   margin-top: var(--e-7);
 }
-.paso__num {
+.paso {
+  position: relative;
   display: grid;
-  place-items: center;
-  width: 2.5rem;
-  height: 2.5rem;
-  margin-bottom: var(--e-4);
-  border-radius: 50%;
-  box-shadow: inset 0 0 0 2px var(--tinta);
-  font-family: var(--display);
-  font-weight: 760;
-  font-size: 1.125rem;
-  font-variant-numeric: tabular-nums;
+  grid-template-columns: var(--nodo) minmax(0, 1fr);
+  gap: var(--e-4);
+  padding-bottom: var(--hueco);
+}
+.paso:last-child {
+  padding-bottom: 0;
+}
+.paso__nodo svg {
+  display: block;
+  width: var(--nodo);
+  height: var(--nodo);
+}
+.paso__texto {
+  padding-top: var(--e-3);
 }
 .paso h3 {
   max-width: 20ch;
 }
 .paso p {
-  margin-top: var(--e-3);
+  margin-top: var(--e-2);
   max-width: 36ch;
   color: var(--tinta-2);
 }
+.paso .paso__espera {
+  margin-top: var(--e-4);
+  font-size: 1rem;
+  font-style: italic;
+}
+/* Conector: discontinuo de la llamada a Marta, naranja de Marta al parte */
+.paso:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: calc(var(--nodo) / 2 - 1.5px);
+  top: calc(var(--nodo) + var(--e-2));
+  bottom: var(--e-2);
+  border-left: 3px dotted var(--tinta);
+}
+.paso--marta:not(:last-child)::after {
+  border-left: 4px solid var(--naranja);
+  left: calc(var(--nodo) / 2 - 2px);
+}
 @media (min-width: 48em) {
   .pasos {
+    --nodo: 4.5rem;
+    --hueco: var(--e-6);
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--e-6);
+    column-gap: var(--hueco);
+  }
+  .paso {
+    grid-template-columns: 1fr;
+    align-content: start;
+    padding-bottom: 0;
+  }
+  .paso__texto {
+    padding-top: 0;
+  }
+  .paso:not(:last-child)::after {
+    top: calc(var(--nodo) / 2 - 1.5px);
+    bottom: auto;
+    left: calc(var(--nodo) + var(--e-4));
+    right: calc(var(--e-4) - var(--hueco));
+    border-left: 0;
+    border-top: 3px dotted var(--tinta);
+  }
+  .paso--marta:not(:last-child)::after {
+    border-left: 0;
+    border-top: 4px solid var(--naranja);
+    left: calc(var(--nodo) + var(--e-4));
+    top: calc(var(--nodo) / 2 - 2px);
+  }
+  /* La espera se lee encima del conector, entre la llamada y Marta */
+  .paso .paso__espera {
+    position: absolute;
+    top: calc(var(--nodo) / 2 - 2.25rem);
+    left: calc(var(--nodo) + var(--e-4));
+    right: calc(var(--e-4) - var(--hueco));
+    margin: 0;
+    text-align: center;
   }
 }
 
@@ -1057,7 +1075,7 @@ main:focus {
   gap: var(--e-7);
 }
 .ejemplo__notas {
-  display: grid;
+  display: none;
   gap: var(--e-5);
   margin-top: var(--e-7);
 }
@@ -1097,6 +1115,9 @@ main:focus {
   justify-self: start;
 }
 @media (min-width: 64em) {
+  .ejemplo__notas {
+    display: grid;
+  }
   .ejemplo__rejilla {
     grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
     gap: var(--e-8);
@@ -1110,11 +1131,11 @@ main:focus {
 /* Oficios */
 .oficios__lista {
   display: grid;
-  gap: var(--e-6) var(--e-7);
-  margin-top: var(--e-7);
+  gap: var(--e-5) var(--e-7);
+  margin-top: var(--e-6);
 }
 .oficios__lista li {
-  padding-top: var(--e-4);
+  padding-top: var(--e-3);
   border-top: 2px solid var(--tinta);
 }
 .oficios__lista h3 {
@@ -1122,7 +1143,7 @@ main:focus {
   font-weight: 720;
 }
 .oficios__lista p {
-  margin-top: var(--e-2);
+  margin-top: var(--e-1);
   max-width: 36ch;
   color: var(--tinta-2);
 }
@@ -1130,7 +1151,7 @@ main:focus {
   display: flex;
   gap: var(--e-3);
   align-items: baseline;
-  margin-top: var(--e-7);
+  margin-top: var(--e-6);
   max-width: 40rem;
   font-family: var(--display);
   font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);

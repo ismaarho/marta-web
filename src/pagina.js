@@ -31,65 +31,29 @@ function parte(t, { mini = false } = {}) {
   </article>`;
 }
 
-// Diagrama propio: llamada → unos segundos sin respuesta → Marta → parte
-function diagrama(t) {
-  const d = t.comoFunciona.diagrama;
-  const onda = (x, y) =>
-    [-12, -6, 0, 6, 12]
-      .map((dx, i) => {
-        const h = [8, 16, 24, 16, 8][i];
-        return `<line x1="${x + dx}" y1="${y - h / 2}" x2="${x + dx}" y2="${y + h / 2}"/>`;
-      })
-      .join("");
-  const ticket = (x, y) => `
-      <g transform="translate(${x} ${y})">
-        <rect x="-34" y="-42" width="68" height="84" rx="4" class="d-papel"/>
-        <rect x="-34" y="-42" width="68" height="18" rx="4" class="d-naranja"/>
-        <rect x="-34" y="-30" width="68" height="6" class="d-naranja"/>
-        <line x1="-22" y1="-6" x2="22" y2="-6" class="d-renglon"/>
-        <line x1="-22" y1="8" x2="16" y2="8" class="d-renglon"/>
-        <line x1="-22" y1="22" x2="10" y2="22" class="d-renglon"/>
-      </g>`;
-  const tel = (x, y) => `
-      <g transform="translate(${x} ${y})">
-        <circle r="46" class="d-nodo"/>
-        <g transform="translate(-24 -24) scale(1.5)" class="d-icono">${icono.telefono.replace(/<\/?svg[^>]*>/g, "")}</g>
-      </g>`;
-  const marta = (x, y) => `
-      <g transform="translate(${x} ${y})">
-        <circle r="46" class="d-nodo d-nodo--tinta"/>
-        <g class="d-onda">${onda(0, 0)}</g>
-      </g>`;
-
-  return `
-  <div class="diagrama" role="img" aria-label="${esc(d.resumen)}">
-    <svg class="diagrama__h" viewBox="0 0 1000 220" aria-hidden="true" focusable="false">
-      ${tel(90, 96)}
-      <path d="M184 96 H 418" class="d-espera"/>
-      <path d="M146 76 q 8 20 0 40 M161 68 q 12 28 0 56" class="d-tono"/>
-      <text x="302" y="72" text-anchor="middle" class="d-nota">${esc(d.espera)}</text>
-      ${marta(480, 96)}
-      <path d="M540 96 H 796" class="d-envio"/>
-      <path d="M784 86 l 14 10 l -14 10" class="d-envio d-punta"/>
-      ${ticket(860, 96)}
-      <text x="90" y="186" text-anchor="middle" class="d-etiqueta">${esc(d.llamada)}</text>
-      <text x="480" y="186" text-anchor="middle" class="d-etiqueta">${esc(d.marta)}</text>
-      <text x="860" y="186" text-anchor="middle" class="d-etiqueta">${esc(d.parte)}</text>
-    </svg>
-    <svg class="diagrama__v" viewBox="0 0 340 560" aria-hidden="true" focusable="false">
-      ${tel(70, 64)}
-      <text x="128" y="72" class="d-etiqueta">${esc(d.llamada)}</text>
-      <path d="M70 122 V 236" class="d-espera"/>
-      <text x="96" y="186" class="d-nota">${esc(d.espera)}</text>
-      ${marta(70, 296)}
-      <text x="128" y="304" class="d-etiqueta">${esc(d.marta)}</text>
-      <path d="M70 354 V 440" class="d-envio"/>
-      <path d="M60 428 l 10 14 l 10 -14" class="d-envio d-punta"/>
-      ${ticket(70, 496)}
-      <text x="128" y="504" class="d-etiqueta">${esc(d.parte)}</text>
-    </svg>
-  </div>`;
-}
+// Nodos del diagrama propio (llamada → Marta → parte). Cada paso de "Cómo funciona" lleva el suyo.
+const nodos = {
+  llamada: `<svg viewBox="0 0 72 72" aria-hidden="true" focusable="false">
+      <circle cx="36" cy="36" r="33" class="d-nodo"/>
+      <g transform="translate(12 12) scale(1.5)" class="d-icono">${icono.telefono.replace(/<\/?svg[^>]*>/g, "")}</g>
+    </svg>`,
+  marta: `<svg viewBox="0 0 72 72" aria-hidden="true" focusable="false">
+      <circle cx="36" cy="36" r="33" class="d-nodo d-nodo--tinta"/>
+      <g class="d-onda">${[-12, -6, 0, 6, 12]
+        .map((dx, i) => {
+          const h = [8, 16, 24, 16, 8][i];
+          return `<line x1="${36 + dx}" y1="${36 - h / 2}" x2="${36 + dx}" y2="${36 + h / 2}"/>`;
+        })
+        .join("")}</g>
+    </svg>`,
+  parte: `<svg viewBox="0 0 72 72" aria-hidden="true" focusable="false">
+      <rect x="14" y="5" width="44" height="62" rx="4" class="d-papel"/>
+      <path d="M14 9a4 4 0 0 1 4-4h36a4 4 0 0 1 4 4v9H14z" class="d-naranja"/>
+      <line x1="22" y1="32" x2="50" y2="32" class="d-renglon"/>
+      <line x1="22" y1="43" x2="46" y2="43" class="d-renglon"/>
+      <line x1="22" y1="54" x2="40" y2="54" class="d-renglon"/>
+    </svg>`,
+};
 
 export function cabeza(t, sitio = "") {
   const base = sitio.replace(/\/$/, "");
@@ -179,11 +143,17 @@ export function pagina(t, WHATSAPP) {
   <section class="seccion como" id="${esc(cf.id)}" aria-labelledby="como-titulo">
     <div class="contenedor">
       <h2 id="como-titulo">${esc(cf.titulo)}</h2>
-      ${diagrama(t)}
       <ol class="pasos">
         ${cf.pasos
           .map(
-            (s, i) => `<li class="paso"><span class="paso__num" aria-hidden="true">${i + 1}</span><h3>${esc(s.titulo)}</h3><p>${esc(s.texto)}</p></li>`
+            (s, i) => `<li class="paso paso--${s.nodo}">
+          <div class="paso__nodo">${nodos[s.nodo]}</div>
+          <div class="paso__texto">
+            <h3>${esc(s.titulo)}</h3>
+            <p>${esc(s.texto)}</p>
+            ${i === 0 ? `<p class="paso__espera">${esc(cf.espera)}</p>` : ""}
+          </div>
+        </li>`
           )
           .join("")}
       </ol>
